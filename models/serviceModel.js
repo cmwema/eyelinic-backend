@@ -6,6 +6,9 @@ const serviceSchema = new mongoose.Schema({
     // required: true,
     // unique: true,
   },
+  slug: {
+    type: String,
+  },
   ratingAverage: {
     type: Number,
     default: 4.5,
@@ -28,6 +31,13 @@ const serviceSchema = new mongoose.Schema({
   coverImage: {
     type: String,
   },
+});
+
+// MIDDLEWARES
+serviceSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, { lower: true });
+
+  next();
 });
 
 const Service = new mongoose.model("Service", serviceSchema);
