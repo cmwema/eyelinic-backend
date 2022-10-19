@@ -23,7 +23,9 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: false,
-      default: "client",
+      enum: {
+        values: ["admin", "practitioner", "client"],
+      },
     },
     phoneNumber: {
       type: String,
@@ -62,6 +64,7 @@ const userSchema = new mongoose.Schema(
   { toObject: { virtuals: true } }
 );
 
+// calculate age
 userSchema.virtual("age").get(function () {
   const currentYear = new Date().getFullYear();
   const yearOfBirth = new Date(this.dateOfBirth).getFullYear();

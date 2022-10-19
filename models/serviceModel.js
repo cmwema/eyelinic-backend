@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const serviceSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true,
-    // unique: true,
+    required: true,
+    unique: true,
   },
   slug: {
     type: String,
@@ -12,14 +12,18 @@ const serviceSchema = new mongoose.Schema({
   ratingAverage: {
     type: Number,
     default: 4.5,
+    min: 1,
+    max: 5,
   },
   ratingQuantity: {
     type: Number,
     default: 0,
+    min: 0,
   },
   price: {
     type: Number,
-    // required: true,
+    required: true,
+    min: 0,
   },
   description: {
     type: String,
