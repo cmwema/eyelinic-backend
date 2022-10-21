@@ -1,5 +1,6 @@
 const Service = require("./../models/serviceModel");
 const catchAsync = require("./../utils/catchAsync");
+const AppError = require("./../utils/appError");
 
 exports.getAllServices = catchAsync(async (req, res) => {
   const services = await Service.find();
@@ -27,6 +28,10 @@ exports.createService = catchAsync(async (req, res) => {
 exports.getService = catchAsync(async (req, res) => {
   const service = await Service.findById(req.params.id);
 
+  if (!service) {
+    throw new AppError("No service found with that ID");
+  }
+
   res.status(200).json({
     status: "success",
     result: 1,
@@ -41,6 +46,11 @@ exports.updateService = catchAsync(async (req, res) => {
     new: true,
     runValidators: true,
   });
+
+  if (!service) {
+    throw new AppError("No service found with that ID");
+  }
+
   res.status(200).json({
     status: "success",
     data: {
@@ -51,6 +61,11 @@ exports.updateService = catchAsync(async (req, res) => {
 
 exports.deleteService = catchAsync(async (req, res) => {
   const service = await Service.findByIdAndDelete(req.params.id);
+
+  if (!service) {
+    throw new AppError("No service found with that ID");
+  }
+
   res.status(204).json({
     status: "success",
     data: {
