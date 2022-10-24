@@ -36,17 +36,18 @@ const serviceSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   summary: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   coverImage: {
     type: String,
   },
+  images: [String],
 });
 
 // MIDDLEWARES

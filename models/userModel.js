@@ -16,7 +16,13 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "please Enter password."],
+      select: false,
+      minlength: [8, "password must be atleast 8 characters long"],
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, "Please confirm your password"],
       select: false,
       minlength: [8, "password must be atleast 8 characters long"],
     },
@@ -70,6 +76,8 @@ userSchema.virtual("age").get(function () {
   const yearOfBirth = new Date(this.dateOfBirth).getFullYear();
   return currentYear - yearOfBirth;
 });
+
+// userSchema.pre(){ }
 
 // querry middlewares
 userSchema.pre(/^find/, function (next) {

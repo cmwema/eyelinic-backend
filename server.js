@@ -4,6 +4,15 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const app = require("./app");
 
+process.on("uncaughtException", (err) => {
+  console.log(err.name, err.message);
+  console.log("UnhandledException:    shutting down.....");
+
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useCreateIndex: true,
@@ -17,6 +26,15 @@ mongoose
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log(err.name, err.message);
+  console.log("UnhandledRejection:    shutting down.....");
+
+  server.close(() => {
+    process.exit(1);
+  });
 });
