@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
+const bcryptjs = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,14 +18,14 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "please Enter password."],
-      select: false,
       minlength: [8, "password must be atleast 8 characters long"],
+      select: false,
     },
     passwordConfirm: {
       type: String,
       required: [true, "Please confirm your password"],
-      select: false,
       minlength: [8, "password must be atleast 8 characters long"],
+      select: false,
     },
     role: {
       type: String,
@@ -60,7 +61,7 @@ const userSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
-      select: false,
+      select: true,
     },
     payments: [String],
     consultations: [String],
@@ -77,7 +78,14 @@ userSchema.virtual("age").get(function () {
   return currentYear - yearOfBirth;
 });
 
-// userSchema.pre(){ }
+userSchema.pre("save", async function (next) {
+  const salt = await bcryptjs.genSalt(10);
+
+  this.password = await bcryptjs.hash(this.password, salt);
+  this.passwordConfirm = this.password;
+
+  console.log(this.password);
+});
 
 // querry middlewares
 userSchema.pre(/^find/, function (next) {

@@ -11,6 +11,7 @@ exports.getAllUsers = catchAsync(async (req, res) => {
     .paginate();
 
   const users = await features.query;
+
   res.status(200).json({
     status: "success",
     results: users.length,
@@ -26,7 +27,7 @@ exports.createUser = catchAsync(async (req, res) => {
   res.status(201).json({
     status: "success",
     data: {
-      user: newUser,
+      user: await User.findById({ _id: `${newUser._id}` }),
     },
   });
 });
