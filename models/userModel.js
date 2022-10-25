@@ -21,12 +21,7 @@ const userSchema = new mongoose.Schema(
       minlength: [8, "password must be atleast 8 characters long"],
       select: false,
     },
-    passwordConfirm: {
-      type: String,
-      required: [true, "Please confirm your password"],
-      minlength: [8, "password must be atleast 8 characters long"],
-      select: false,
-    },
+
     role: {
       type: String,
       required: false,
@@ -71,6 +66,14 @@ const userSchema = new mongoose.Schema(
   { toObject: { virtuals: true } }
 );
 
+// check for correct password -->> for log in
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcryptjs.compare(candidatePassword, userPassword);
+};
+
 // calculate age
 userSchema.virtual("age").get(function () {
   const currentYear = new Date().getFullYear();
@@ -82,7 +85,6 @@ userSchema.pre("save", async function (next) {
   const salt = await bcryptjs.genSalt(10);
 
   this.password = await bcryptjs.hash(this.password, salt);
-  this.passwordConfirm = this.password;
 
   console.log(this.password);
 });

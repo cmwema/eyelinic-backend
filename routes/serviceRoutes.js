@@ -1,11 +1,11 @@
-const express = require("express");
+const router = require("express").Router();
 
 const serviceController = require("./../controller/serviceController");
-const router = express.Router();
+const authController = require("./../controller/authController");
 
 router
   .route("/")
-  .get(serviceController.getAllServices)
+  .get(authController.protect, serviceController.getAllServices)
   .post(serviceController.createService);
 
 router.route("/service-stats").get(serviceController.getServiceStats);
