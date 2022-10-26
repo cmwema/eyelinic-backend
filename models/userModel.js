@@ -60,7 +60,10 @@ const userSchema = new mongoose.Schema(
     },
     payments: [String],
     consultations: [String],
+
+    passwordChangedAt: Date,
   },
+
   { versionKey: false },
   { toJSON: { virtuals: true } },
   { toObject: { virtuals: true } }
@@ -72,6 +75,19 @@ userSchema.methods.correctPassword = async function (
   userPassword
 ) {
   return await bcryptjs.compare(candidatePassword, userPassword);
+};
+
+// check if password was changed after token was issued
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    console.log(changedTimestamp, JWTTimestamp);
+    return JWTTimestamp < changedTimestamp;
+  }
+  return false;
 };
 
 // calculate age
@@ -86,7 +102,7 @@ userSchema.pre("save", async function (next) {
 
   this.password = await bcryptjs.hash(this.password, salt);
 
-  console.log(this.password);
+  // console.log(this.password);
 });
 
 // querry middlewares
