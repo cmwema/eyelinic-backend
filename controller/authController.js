@@ -89,6 +89,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       throw new AppError("User belonging to this token no longer exist", 401);
     }
 
+    // console.log(currentUser);
     // check whether user changed password after JWT was issued
     // console.log(decoded);
     if (currentUser.changedPasswordAfter(decoded.iat)) {
@@ -99,7 +100,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     } //decode.iat --> issued at
 
     // grant access to the protected rout
-    res.user = currentUser;
+    req.user = currentUser;
+
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
@@ -114,4 +116,27 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.restrict = catchAsync(async (req, res, next) => {});
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // console.log(req.user);
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+
+    next();
+  };
+};
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) return next(new AppError("User not found!", 404));
+
+  const resetToken = await user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  next();
+});
+exports.resetPassword = (req, res, next) => {};

@@ -7,17 +7,19 @@ const userController = require("./../controller/userController");
 
 router.post("/sign-up", authController.signUp);
 router.post("/log-in", authController.logIn);
+router.post("/forgot-password", authController.forgotPassword);
+router.post("/reset-password", authController.resetPassword);
 
 router
   .route("/")
   .get(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin", "practitioner"),
     userController.getAllUsers
   )
   .post(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin"),
     userController.createUser
   );
 
@@ -25,7 +27,7 @@ router
   .route("/users-stats")
   .get(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin"),
     userController.getUserStats
   );
 router

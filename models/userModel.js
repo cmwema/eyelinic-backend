@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
 const bcryptjs = require("bcryptjs");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
   {
@@ -25,9 +26,8 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: false,
-      enum: {
-        values: ["admin", "practitioner", "client"],
-      },
+      enum: ["admin", "practitioner", "client"],
+      default: "client",
     },
     phoneNumber: {
       type: String,
@@ -62,6 +62,8 @@ const userSchema = new mongoose.Schema(
     consultations: [String],
 
     passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetTokenExpires: Date,
   },
 
   { versionKey: false },
@@ -90,6 +92,22 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
+// reset password instance function
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+  console.log(this.passwordResetToken, resetToken);
+
+  return resetToken;
+};
+
 // calculate age
 userSchema.virtual("age").get(function () {
   const currentYear = new Date().getFullYear();
@@ -97,12 +115,14 @@ userSchema.virtual("age").get(function () {
   return currentYear - yearOfBirth;
 });
 
+// hashing password before saving to database
 userSchema.pre("save", async function (next) {
   const salt = await bcryptjs.genSalt(10);
 
   this.password = await bcryptjs.hash(this.password, salt);
 
   // console.log(this.password);
+  next();
 });
 
 // querry middlewares

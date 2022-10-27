@@ -8,7 +8,7 @@ router
   .get(authController.protect, serviceController.getAllServices)
   .post(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin"),
     serviceController.createService
   );
 
@@ -19,7 +19,7 @@ router
   .route("/monthly-plan/:year")
   .get(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin"),
     serviceController.getMonthlyPlan
   );
 
@@ -28,12 +28,12 @@ router
   .get(authController.protect, serviceController.getService)
   .patch(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin"),
     serviceController.updateService
   )
   .delete(
     authController.protect,
-    authController.restrict,
+    authController.restrictTo("admin"),
     serviceController.deleteService
   );
 
