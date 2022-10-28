@@ -3,6 +3,7 @@ const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("./../utils/email");
 
 // creation of token
 const signToken = (id) => {
@@ -130,12 +131,20 @@ exports.restrictTo = (...roles) => {
 };
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
+  // get user based on the posted email
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) return next(new AppError("User not found!", 404));
 
+  // generate a random token
   const resetToken = await user.createPasswordResetToken();
-  await user.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false, isNew: false });
+
+  // await user.update();
+  // send the token to user's email
+  const resetURL = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/users/reset-password/${resetToken}`;
 
   next();
 });
