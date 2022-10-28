@@ -14,6 +14,31 @@ const signToken = (id) => {
   });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+  const cookiesOptions = {
+    httpOnly: true,
+    expires: new Date(
+      //   Cookie Expire is in days so we convert it in milliseconds to add it to date
+      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+  };
+  if (process.env.NODE_ENV === "production") cookiesOptions.secure = true;
+
+  res.cookie("jwt-cookie", token, cookiesOptions);
+
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 // sign up user
 exports.signUp = catchAsync(async (req, res) => {
   // req.body.password = await bcrypt.hash(req.body.password, salt);
@@ -29,14 +54,7 @@ exports.signUp = catchAsync(async (req, res) => {
     passwordChangedAt: req.body.passwordChangedAt,
   });
 
-  const token = signToken(newUser._id);
-  res.status(201).json({
-    status: "success",
-    token,
-    data: {
-      user: await User.findById({ _id: `${newUser._id}` }),
-    },
-  });
+  createSendToken(newUser, 201, res);
 });
 
 // log user
@@ -59,10 +77,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
   const token = signToken(await user._id);
 
   // console.log(token);
-  res.status(200).json({
-    status: "success",
-    token: token,
-  });
+  createSendToken(user, 200, res);
 });
 
 // check whether user is signed in to access protected routes
@@ -216,11 +231,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // log in the user
-  const token = signToken(await user._id);
-  res.status(200).json({
-    status: "success",
-    token: token,
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.updateMyPassword = catchAsync(async (req, res, next) => {
@@ -237,8 +248,5 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 
   const token = signToken(await user._id);
 
-  res.status(200).json({
-    status: "success",
-    token: token,
-  });
+  createSendToken(user, 200, res);
 });
