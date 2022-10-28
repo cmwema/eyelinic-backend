@@ -4,6 +4,8 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("./../utils/email");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 
 // creation of token
 const signToken = (id) => {
@@ -14,9 +16,13 @@ const signToken = (id) => {
 
 // sign up user
 exports.signUp = catchAsync(async (req, res) => {
+  // req.body.password = await bcrypt.hash(req.body.password, salt);
+  // console.log(req);
+  const salt = await bcrypt.genSalt(10);
+
   const newUser = await User.create({
     name: req.body.name,
-    password: req.body.password,
+    password: await bcrypt.hash(req.body.password, salt),
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
@@ -137,8 +143,18 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   if (!user) return next(new AppError("User not found!", 404));
 
   // generate a random token
-  const resetToken = await user.createPasswordResetToken();
-  await user.save({ validateBeforeSave: false, isNew: false });
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  const passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  const passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+  await user.updateOne({ passwordResetTokenExpires, passwordResetToken });
+
+  // console.log(user.passwordResetToken, { resetToken });
 
   // await user.update();
   // send the token to user's email
@@ -146,6 +162,83 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     "host"
   )}/api/v1/users/reset-password/${resetToken}`;
 
-  next();
+  const message = `Forgot your password? Submit a PATCH request with your new password to : \n${resetURL}.
+  \nif you did not forget your password please ignore this email.`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Your password reset token (valid in 10min)",
+      message,
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Token send to email!",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpires = undefined;
+    await user.save({ validateBeforeSave: false, isNew: false });
+
+    next(
+      new AppError(
+        "Error occured when sending the reset Token....please try again later!",
+        500
+      )
+    );
+  }
 });
-exports.resetPassword = (req, res, next) => {};
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetTokenExpires: { $gt: Date.now() },
+  });
+
+  // check if token is valid
+  if (!user) {
+    return next(new AppError("Token is invalid or has expired!"));
+  }
+
+  // set new password
+  const salt = await bcrypt.genSalt(10);
+
+  user.password = await bcrypt.hash(req.body.password, salt);
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExpires = undefined;
+  user.passwordChangedAt = Date.now();
+  await user.save();
+
+  // log in the user
+  const token = signToken(await user._id);
+  res.status(200).json({
+    status: "success",
+    token: token,
+  });
+});
+
+exports.updateMyPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new AppError("Your current password is wrong.", 401));
+  }
+
+  const salt = await bcrypt.genSalt(10);
+
+  user.password = await bcrypt.hash(req.body.password, salt);
+  await user.save();
+
+  const token = signToken(await user._id);
+
+  res.status(200).json({
+    status: "success",
+    token: token,
+  });
+});

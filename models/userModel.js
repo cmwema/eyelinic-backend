@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
-const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -76,7 +76,7 @@ userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
-  return await bcryptjs.compare(candidatePassword, userPassword);
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 // check if password was changed after token was issued
@@ -86,26 +86,10 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
       this.passwordChangedAt.getTime() / 1000,
       10
     );
-    console.log(changedTimestamp, JWTTimestamp);
+    // console.log(changedTimestamp, JWTTimestamp);
     return JWTTimestamp < changedTimestamp;
   }
   return false;
-};
-
-// reset password instance function
-userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString("hex");
-
-  this.passwordResetToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
-
-  this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
-
-  console.log(this.passwordResetToken, resetToken);
-
-  return resetToken;
 };
 
 // calculate age
@@ -113,16 +97,6 @@ userSchema.virtual("age").get(function () {
   const currentYear = new Date().getFullYear();
   const yearOfBirth = new Date(this.dateOfBirth).getFullYear();
   return currentYear - yearOfBirth;
-});
-
-// hashing password before saving to database
-userSchema.pre("save", async function (next) {
-  const salt = await bcryptjs.genSalt(10);
-
-  this.password = await bcryptjs.hash(this.password, salt);
-
-  // console.log(this.password);
-  next();
 });
 
 // querry middlewares

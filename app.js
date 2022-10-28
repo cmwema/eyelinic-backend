@@ -1,5 +1,6 @@
 const bp = require("body-parser");
-const app = require("express")();
+const express = require("express");
+const app = express();
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errController");
@@ -10,7 +11,8 @@ const serviceRouter = require("./routes/serviceRoutes");
  * MIDDLEWARES
  */
 app.use(bp.json());
-app.use(bp.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+app.set("view engine", "ejs");
 
 // USERS routes mounting
 app.use("/api/v1/users", userRouter);
