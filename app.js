@@ -1,4 +1,3 @@
-const bp = require("body-parser");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
@@ -6,6 +5,7 @@ const helmet = require("helmet");
 const xssClean = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
+const path = require("path");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errController");
@@ -37,7 +37,6 @@ app.use("/api", limiter);
 // body parser ---reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
-app.set("view engine", "ejs");
 
 // data Sanitazation
 // NoSQL injection
@@ -59,17 +58,29 @@ app.use(
   })
 );
 
-// USERS routes mounting
+// page routes
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Serving static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// landing page
+app.get("/home", (req, res, next) => {
+  res.render("index");
+});
+
+// USERS routes mounting// 1) GLOBAL MIDDLEWARES
 app.use("/api/v1/users", userRouter);
 
-// SERVICES routes mounting
+// SERVICES routes mounting// 1) GLOB// 1) GLOBAL MIDDLEWARESAL MIDDLEWARES
 app.use("/api/v1/services", serviceRouter);
 
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
-
+// 1) GLOBAL MIDDLEWARES
 // error handling
 app.use(globalErrorHandler);
 
