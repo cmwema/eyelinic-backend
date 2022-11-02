@@ -70,10 +70,7 @@ app.get("/home", (req, res, next) => {
   res.render("index");
 });
 
-// USERS routes mounting// 1) GLOBAL MIDDLEWARES
 app.use("/api/v1/users", userRouter);
-
-// SERVICES routes mounting// 1) GLOB// 1) GLOBAL MIDDLEWARESAL MIDDLEWARES
 app.use("/api/v1/services", serviceRouter);
 
 // for unhandled url requests(invalid urls)

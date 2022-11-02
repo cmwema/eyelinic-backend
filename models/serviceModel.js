@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./userModel");
 
 const serviceSchema = new mongoose.Schema({
   name: {
