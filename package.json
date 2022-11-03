@@ -6,6 +6,7 @@
   "scripts": {
     "compile:sass": "sass  public/scss:public/css",
     "start": "NODE_ENV=production node server.js",
+    "start:dev": "nodemon server.js",
     "debug": "ndb server.js"
   },
   "engines": {
@@ -22,6 +23,7 @@
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "bootstrap": "^5.2.2",
+    "compression": "^1.7.4",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",

@@ -6,12 +6,14 @@ const xssClean = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const path = require("path");
+const compression = require("compression");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errController");
 
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
+const reviewRouter = require("./routes/reviewRoutes");
 
 const app = express();
 
@@ -58,6 +60,9 @@ app.use(
   })
 );
 
+// compress responses(html/ json)
+app.use(compression());
+
 // page routes
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -72,6 +77,7 @@ app.get("/home", (req, res, next) => {
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/services", serviceRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {

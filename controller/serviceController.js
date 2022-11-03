@@ -26,7 +26,7 @@ exports.createService = catchAsync(async (req, res) => {
 });
 
 exports.getService = catchAsync(async (req, res) => {
-  const service = await Service.findById(req.params.id);
+  const service = await Service.findById(req.params.id).populate("reviews");
 
   if (!service) {
     throw new AppError("No service found with that ID");

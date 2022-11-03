@@ -30,13 +30,25 @@ exports.getAllUsers = catchAsync(async (req, res) => {
 });
 
 exports.createUser = catchAsync(async (req, res) => {
-  const newUser = await User.create({
-    name: req.body.name,
-    password: req.body.password,
-    phoneNumber: req.body.phoneNumber,
-    email: req.body.email,
-    dateOfBirth: req.body.dateOfBirth,
-  });
+  let newUser;
+  if (req.user.role == "admin") {
+    newUser = await User.create({
+      name: req.body.name,
+      password: req.body.password,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      dateOfBirth: req.body.dateOfBirth,
+      role: req.body.role,
+    });
+  } else {
+    newUser = await User.create({
+      name: req.body.name,
+      password: req.body.password,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      dateOfBirth: req.body.dateOfBirth,
+    });
+  }
 
   res.status(201).json({
     status: "success",

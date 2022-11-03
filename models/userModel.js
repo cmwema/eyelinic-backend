@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: false,
-      enum: ["admin", "practitioner", "client"],
+      enum: ["admin", "optician", "client"],
       default: "client",
     },
     phoneNumber: {
@@ -59,18 +59,23 @@ const userSchema = new mongoose.Schema(
       default: Date.now(),
       select: true,
     },
-    payments: [String],
-    consultations: [String],
+    bookings: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Booking",
+      },
+    ],
 
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetTokenExpires: Date,
   },
 
-  { versionKey: false },
-  { toJSON: { virtuals: true } },
-  { toObject: { virtuals: true } }
+  { versionKey: false }
 );
+
+userSchema.set("toObject", { virtuals: true });
+userSchema.set("toJSON", { virtuals: true });
 
 // check for correct password -->> for log in
 userSchema.methods.correctPassword = async function (
@@ -94,11 +99,11 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 // calculate age
-userSchema.virtual("age").get(function () {
-  const currentYear = new Date().getFullYear();
-  const yearOfBirth = new Date(this.dateOfBirth).getFullYear();
-  return currentYear - yearOfBirth;
-});
+// userSchema.virtual("age").get(function () {
+//   const currentYear = new Date().getFullYear();
+//   const yearOfBirth = new Date(this.dateOfBirth).getFullYear();
+//   return currentYear - yearOfBirth;
+// });
 
 // querry middlewares
 userSchema.pre(/^find/, function (next) {
