@@ -2,6 +2,9 @@ const router = require("express").Router();
 
 const serviceController = require("./../controller/serviceController");
 const authController = require("./../controller/authController");
+const reviewRouter = require("./reviewRoutes");
+
+router.use("/:serviceId/reviews", reviewRouter);
 
 router
   .route("/")
@@ -15,13 +18,6 @@ router
 router
   .route("/service-stats")
   .get(authController.protect, serviceController.getServiceStats);
-router
-  .route("/monthly-plan/:year")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin"),
-    serviceController.getMonthlyPlan
-  );
 
 router
   .route("/:id")

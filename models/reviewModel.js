@@ -39,9 +39,6 @@ reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
     select: "name",
-  }).populate({
-    path: "service",
-    select: "name -opticians ",
   });
   next();
 });

@@ -1,6 +1,7 @@
 const Service = require("./../models/serviceModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
+const handlerFactory = require("./handlerFactory");
 
 exports.getAllServices = catchAsync(async (req, res) => {
   const services = await Service.find();
@@ -59,20 +60,7 @@ exports.updateService = catchAsync(async (req, res) => {
   });
 });
 
-exports.deleteService = catchAsync(async (req, res) => {
-  const service = await Service.findByIdAndDelete(req.params.id);
-
-  if (!service) {
-    throw new AppError("No service found with that ID");
-  }
-
-  res.status(204).json({
-    status: "success",
-    data: {
-      service,
-    },
-  });
-});
+exports.deleteService = handlerFactory.deleteOne(Service);
 
 exports.getServiceStats = catchAsync(async (req, res) => {
   const stats = await Service.aggregate([
@@ -101,19 +89,6 @@ exports.getServiceStats = catchAsync(async (req, res) => {
     status: "success",
     data: {
       stats,
-    },
-  });
-});
-
-exports.getMonthlyPlan = catchAsync(async (req, res) => {
-  const year = req.params.year;
-
-  const plan = await Service.aggregate([]); //to be implemented
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      plan,
     },
   });
 });
