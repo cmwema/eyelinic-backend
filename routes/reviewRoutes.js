@@ -15,7 +15,7 @@ router
   .route("/:id")
   .delete(
     authController.protect,
-    authController.restrictTo("client admin"),
+    authController.restrictTo("client", "admin"),
     reviewController.deleteReview
   );
 
