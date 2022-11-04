@@ -1,5 +1,4 @@
 const User = require("./../models/userModel");
-const APIFeatures = require("./../utils/apiFeatures");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const handlerFactory = require("./handlerFactory");
@@ -12,68 +11,11 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res) => {
-  const features = new APIFeatures(User.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
+exports.getAllUsers = handlerFactory.getAll(User);
 
-  const users = await features.query;
+exports.createUser = handlerFactory.createOne(User);
 
-  res.status(200).json({
-    status: "success",
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
-
-exports.createUser = catchAsync(async (req, res) => {
-  let newUser;
-  if (req.user.role == "admin") {
-    newUser = await User.create({
-      name: req.body.name,
-      password: req.body.password,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      dateOfBirth: req.body.dateOfBirth,
-      role: req.body.role,
-    });
-  } else {
-    newUser = await User.create({
-      name: req.body.name,
-      password: req.body.password,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      dateOfBirth: req.body.dateOfBirth,
-    });
-  }
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      user: await User.findById({ _id: `${newUser._id}` }),
-    },
-  });
-});
-
-exports.getUser = catchAsync(async (req, res) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    throw new AppError("No user found with that ID", 404);
-  }
-
-  res.status(200).json({
-    status: "success",
-    result: 1,
-    data: {
-      user,
-    },
-  });
-});
+exports.getUser = handlerFactory.getOne(User);
 
 exports.updateUser = handlerFactory.updateOne(User);
 

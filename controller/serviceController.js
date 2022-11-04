@@ -1,46 +1,12 @@
 const Service = require("./../models/serviceModel");
 const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
 const handlerFactory = require("./handlerFactory");
 
-exports.getAllServices = catchAsync(async (req, res) => {
-  const services = await Service.find();
+exports.getAllServices = handlerFactory.getAll(Service);
 
-  res.status(200).json({
-    status: "success",
-    results: services.length,
-    data: {
-      services,
-    },
-  });
-});
+exports.createService = handlerFactory.createOne(Service);
 
-exports.createService = catchAsync(async (req, res) => {
-  const newService = await Service.create(req.body);
-  // console.log(newService);
-  res.status(201).json({
-    status: "success",
-    data: {
-      service: newService,
-    },
-  });
-});
-
-exports.getService = catchAsync(async (req, res) => {
-  const service = await Service.findById(req.params.id).populate("reviews");
-
-  if (!service) {
-    throw new AppError("No service found with that ID");
-  }
-
-  res.status(200).json({
-    status: "success",
-    result: 1,
-    data: {
-      service,
-    },
-  });
-});
+exports.getService = handlerFactory.getOne(Service, { path: "reviews" });
 
 exports.updateService = handlerFactory.updateOne(Service);
 
