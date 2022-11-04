@@ -1,5 +1,6 @@
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
+const APIFeatures = require("./../utils/apiFeatures");
 
 // delete single document factory function
 exports.deleteOne = (Model) =>
@@ -20,19 +21,73 @@ exports.deleteOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res) => {
-    const document = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!document) {
+    if (!doc) {
       throw new AppError("No document found with that ID", 404);
     }
 
     res.status(200).json({
       status: "success",
       data: {
-        document,
+        doc,
+      },
+    });
+  });
+
+exports.createOne = (Model) =>
+  catchAsync(async (req, res) => {
+    const newDoc = await Model.create(req.body);
+    // console.log(newDoc);
+    res.status(201).json({
+      status: "success",
+      data: {
+        newDoc,
+      },
+    });
+  });
+
+exports.getAll = (Model) =>
+  catchAsync(async (req, res) => {
+    // for nexted routes to get service reviews
+    let filter = req.params.serviceId ? { service: req.params.serviceId } : {};
+    const features = new APIFeatures(Model.find(filter), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+
+    const doc = await features.query;
+
+    res.status(200).json({
+      status: "success",
+      results: doc.length,
+      data: {
+        doc,
+      },
+    });
+  });
+
+exports.getOne = (Model, populateOptions) =>
+  catchAsync(async (req, res) => {
+    let query = await Model.findById(req.params.id);
+
+    if (populateOptions)
+      query = await Model.findById(req.params.id).populate(populateOptions);
+    const doc = query;
+
+    if (!doc) {
+      throw new AppError("No document found with that ID");
+    }
+
+    res.status(200).json({
+      status: "success",
+      result: 1,
+      data: {
+        doc,
       },
     });
   });
