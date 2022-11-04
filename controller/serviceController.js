@@ -42,23 +42,7 @@ exports.getService = catchAsync(async (req, res) => {
   });
 });
 
-exports.updateService = catchAsync(async (req, res) => {
-  const service = await Service.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!service) {
-    throw new AppError("No service found with that ID");
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      service,
-    },
-  });
-});
+exports.updateService = handlerFactory.updateOne(Service);
 
 exports.deleteService = handlerFactory.deleteOne(Service);
 
