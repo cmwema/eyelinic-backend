@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Service = require("./serviceModel");
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -9,7 +10,6 @@ const reviewSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      default: 4.5,
       min: 1,
       max: 5,
     },
@@ -41,6 +41,34 @@ reviewSchema.pre(/^find/, function (next) {
     select: "name",
   });
   next();
+});
+
+// calculating average rating
+reviewSchema.statics.calculateAverageRating = async function (serviceId) {
+  const stats = await this.aggregate([
+    {
+      $match: { service: serviceId },
+    },
+    {
+      $group: {
+        _id: "$service",
+        numberOfRatings: { $sum: 1 },
+        averageRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  console.log(stats);
+
+  // persist to dataBase
+  await Service.findByIdAndUpdate(serviceId, {
+    ratingAverage: stats[0].averageRating,
+    ratingQuantity: stats[0].numberOfRatings,
+  });
+};
+
+reviewSchema.post("save", function () {
+  this.constructor.calculateAverageRating(this.service); //called on the Model not on the
 });
 
 const Review = new mongoose.model("Review", reviewSchema);

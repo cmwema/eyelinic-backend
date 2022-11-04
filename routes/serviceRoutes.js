@@ -19,7 +19,6 @@ router.use(authController.protect);
 
 router.route("/:id").get(serviceController.getService);
 
-router.use();
 router
   .route("/service-stats")
   .get(authController.restrictTo("admin"), serviceController.getServiceStats);

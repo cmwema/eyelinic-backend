@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // const User = require("./userModel");
-require("slugify");
+const slugify = require("slugify");
 
 const serviceSchema = new mongoose.Schema(
   {
@@ -62,6 +62,8 @@ const serviceSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
+serviceSchema.index({ price: 1, ratingAverage: -1 }); //price search ordered in ascending  and ratingAverage in descending
+serviceSchema.index({ slug: 1 });
 // MIDDLEWARES
 serviceSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
