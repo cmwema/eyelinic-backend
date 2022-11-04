@@ -3,11 +3,12 @@ const { authorization } = require("paypal-rest-sdk");
 const authController = require("./../controller/authController");
 const reviewController = require("./../controller/reviewController");
 
+router.use(authController.protect);
+
 router
   .route("/")
-  .get(authController.protect, reviewController.getAllReviews)
+  .get(reviewController.getAllReviews)
   .post(
-    authController.protect,
     authController.restrictTo("client"),
     reviewController.createServiceUserIds,
     reviewController.createReview
@@ -15,10 +16,9 @@ router
 
 router
   .route("/:id")
-  .get(authController.protect, reviewController.getReview)
-  .patch(authController.protect, reviewController.updateReview)
+  .get(reviewController.getReview)
+  .patch(reviewController.updateReview)
   .delete(
-    authController.protect,
     authController.restrictTo("client", "admin"),
     reviewController.deleteReview
   );

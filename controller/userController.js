@@ -11,42 +11,11 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getAllUsers = handlerFactory.getAll(User);
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
 
-exports.createUser = handlerFactory.createOne(User);
-
-exports.getUser = handlerFactory.getOne(User);
-
-exports.updateUser = handlerFactory.updateOne(User);
-
-exports.deleteUser = handlerFactory.deleteOne(User);
-
-exports.getUserStats = catchAsync(async (req, res) => {
-  const stats = await User.aggregate([
-    {
-      $match: {
-        age: { $gt: 0 },
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        numUsers: { $sum: 1 },
-        avgAge: { $avg: "$age" },
-        maxAge: { $max: "$age" },
-        minAge: { $min: "$age" },
-      },
-    },
-  ]);
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      stats,
-    },
-  });
-});
-
+  next();
+};
 exports.updateMe = catchAsync(async (req, res, next) => {
   // Check if user sends password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -85,3 +54,39 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.getUserStats = catchAsync(async (req, res) => {
+  const stats = await User.aggregate([
+    {
+      $match: {
+        age: { $gt: 0 },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        numUsers: { $sum: 1 },
+        avgAge: { $avg: "$age" },
+        maxAge: { $max: "$age" },
+        minAge: { $min: "$age" },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats,
+    },
+  });
+});
+
+exports.getAllUsers = handlerFactory.getAll(User);
+
+exports.createUser = handlerFactory.createOne(User);
+
+exports.getUser = handlerFactory.getOne(User);
+
+exports.updateUser = handlerFactory.updateOne(User);
+
+exports.deleteUser = handlerFactory.deleteOne(User);

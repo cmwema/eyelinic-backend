@@ -4,33 +4,38 @@ const serviceController = require("./../controller/serviceController");
 const authController = require("./../controller/authController");
 const reviewRouter = require("./reviewRoutes");
 
+/**
+ * UNPROTECTED ROUTES
+ */
+
 router.use("/:serviceId/reviews", reviewRouter);
+router.route("/").get(serviceController.getAllServices);
 
-router
-  .route("/")
-  .get(authController.protect, serviceController.getAllServices)
-  .post(
-    authController.protect,
-    authController.restrictTo("admin"),
-    serviceController.createService
-  );
+/**
+ * PROTECTED ROUTES
+ */
 
-router
-  .route("/service-stats")
-  .get(authController.protect, serviceController.getServiceStats);
+/**
+ * USER ROUTES
+ */
+
+router.use(authController.protect);
+
+router.route("/:id").get(serviceController.getService);
+
+/**
+ * ADMIN ROUTES
+ */
+
+router.use(authController.restrictTo("admin"));
+
+router.route("/").post(serviceController.createService);
+
+router.route("/service-stats").get(serviceController.getServiceStats);
 
 router
   .route("/:id")
-  .get(authController.protect, serviceController.getService)
-  .patch(
-    authController.protect,
-    authController.restrictTo("admin"),
-    serviceController.updateService
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo("admin"),
-    serviceController.deleteService
-  );
+  .patch(serviceController.updateService)
+  .delete(serviceController.deleteService);
 
 module.exports = router;

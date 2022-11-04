@@ -5,54 +5,57 @@ const router = express.Router();
 const authController = require("./../controller/authController");
 const userController = require("./../controller/userController");
 
+/**
+ * UNPROTECTED ROUTES -> Do not require user to be logged in
+ */
 router.post("/sign-up", authController.signUp);
 router.post("/log-in", authController.logIn);
 router.get("/forgot-password", authController.forgotPassword);
 router.post("/forgot-password", authController.forgotPassword);
-
 router.get("/reset-password/:token", authController.resetPassword);
 router.patch("/reset-password/:token", authController.resetPassword);
+
+/**
+ * PROTECTED ROUTES
+ */
+
+/**
+ * USER ROUTES
+ */
+router.use(authController.protect);
+
+router.get(
+  "/me",
+
+  userController.getMe,
+  userController.getUser
+);
+
 router.patch(
   "/update-my-Password",
-  authController.protect,
+
   authController.updateMyPassword
 );
 
-router.patch("/updateMe", authController.protect, userController.updateMe);
-router.delete("/deleteMe", authController.protect, userController.deleteMe);
+router.patch("/updateMe", userController.updateMe);
+router.delete("/deleteMe", userController.deleteMe);
+
+/**
+ * ADMIN ROUTES
+ */
+
+router.use(authController.restrictTo("admin"));
 
 router
   .route("/")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin"),
-    userController.getAllUsers
-  )
-  .post(
-    authController.protect,
-    authController.restrictTo("admin"),
-    userController.createUser
-  );
+  .get(userController.getAllUsers)
+  .post(userController.createUser);
 
-router
-  .route("/users-stats")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin"),
-    userController.getUserStats
-  );
+router.route("/users-stats").get(userController.getUserStats);
 router
   .route("/:id")
-  .get(authController.protect, userController.getUser)
-  .patch(
-    authController.protect,
-    authController.restrictTo("admin"),
-    userController.updateUser
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo("admin"),
-    userController.deleteUser
-  );
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;
