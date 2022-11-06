@@ -9,7 +9,9 @@ const bcrypt = require("bcrypt");
 
 // creation of token
 const signToken = (id) => {
+  console.log(process.env.JWT_EXPIRES_IN);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
+    algorithm: "HS256",
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
@@ -18,14 +20,11 @@ const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookiesOptions = {
     httpOnly: true,
-    expires: new Date(
-      //   Cookie Expire is in days so we convert it in milliseconds to add it to date
-      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
+    // expires: Date.now() + 10 * 60 * 1000,
   };
   if (process.env.NODE_ENV === "production") cookiesOptions.secure = true;
 
-  res.cookie("jwt-cookie", token, cookiesOptions);
+  res.cookie("jwt-cookie", token, cookiesOptions); //add expires
 
   // Remove password from output
   user.password = undefined;
@@ -169,7 +168,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   await user.updateOne({ passwordResetTokenExpires, passwordResetToken });
 
-  // console.log(user.passwordResetToken, { resetToken });
+  console.log(user.passwordResetToken, { resetToken });
 
   // await user.update();
   // send the token to user's email
