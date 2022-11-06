@@ -20,10 +20,6 @@ router.use(authController.protect);
 router.route("/:id").get(serviceController.getService);
 
 router
-  .route("/service-stats")
-  .get(authController.restrictTo("admin"), serviceController.getServiceStats);
-
-router
   .route("/:id")
   .patch(authController.restrictTo("admin"), serviceController.updateService)
   .delete(authController.restrictTo("admin"), serviceController.deleteService);

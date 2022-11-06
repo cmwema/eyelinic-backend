@@ -24,7 +24,8 @@ const createSendToken = (user, statusCode, res) => {
   };
   if (process.env.NODE_ENV === "production") cookiesOptions.secure = true;
 
-  res.cookie("jwt-cookie", token, cookiesOptions); //add expires
+  res.cookie("jwt-cookie", token);
+
 
   // Remove password from output
   user.password = undefined;

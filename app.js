@@ -77,7 +77,6 @@ app.get("/home", (req, res, next) => {
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/services", serviceRouter);
-app.use("/api/v1/reviews", reviewRouter);
 
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
