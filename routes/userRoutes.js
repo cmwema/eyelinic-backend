@@ -10,9 +10,9 @@ const userController = require("./../controller/userController");
  */
 router.post("/sign-up", authController.signUp);
 router.post("/log-in", authController.logIn);
-router.get("/forgot-password", authController.forgotPassword);
+// router.get("/forgot-password", authController.forgotPassword);
 router.post("/forgot-password", authController.forgotPassword);
-router.get("/reset-password/:token", authController.resetPassword);
+// router.get("/reset-password/:token", authController.resetPassword);
 router.patch("/reset-password/:token", authController.resetPassword);
 
 /**
@@ -37,8 +37,8 @@ router.patch(
   authController.updateMyPassword
 );
 
-router.patch("/updateMe", userController.updateMe);
-router.delete("/deleteMe", userController.deleteMe);
+router.patch("/update-me", userController.updateMe);
+router.delete("/delete-me", userController.deleteMe);
 
 /**
  * ADMIN ROUTES
@@ -51,7 +51,6 @@ router
   .get(userController.getAllUsers)
   .post(userController.createUser);
 
-router.route("/users-stats").get(userController.getUserStats);
 router
   .route("/:id")
   .get(userController.getUser)
