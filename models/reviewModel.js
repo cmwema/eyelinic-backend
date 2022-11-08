@@ -35,6 +35,8 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.set("toObject", { virtuals: true });
 reviewSchema.set("toJSON", { virtuals: true });
 
+reviewSchema.index({ service: 1 }, { user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
@@ -60,15 +62,36 @@ reviewSchema.statics.calculateAverageRating = async function (serviceId) {
 
   console.log(stats);
 
-  // persist to dataBase
-  await Service.findByIdAndUpdate(serviceId, {
-    ratingAverage: stats[0].averageRating,
-    ratingQuantity: stats[0].numberOfRatings,
-  });
+  if (stats.length > 0) {
+    // persist to dataBase
+    await Service.findByIdAndUpdate(serviceId, {
+      ratingAverage: stats[0].averageRating,
+      ratingQuantity: stats[0].numberOfRatings,
+    });
+  } else {
+    // reset back to dafaults and persist to the database
+    await Service.findByIdAndUpdate(serviceId, {
+      ratingAverage: 0,
+      ratingQuantity: 4.5,
+    });
+  }
 };
 
 reviewSchema.post("save", function () {
   this.constructor.calculateAverageRating(this.service); //called on the Model not on the
+});
+
+//recaculating the average rating on update or delete
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  // get the current document to be passed to the next query middle ware
+  this.r = await this.findOne(this.service);
+  next();
+});
+
+reviewSchema.post(/^findOneAnd/, function () {
+  // console.log(this.r);
+  // call calculateAverageRating function
+  this.r.constructor.calculateAverageRating(this.r.service);
 });
 
 const Review = new mongoose.model("Review", reviewSchema);
