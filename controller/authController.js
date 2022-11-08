@@ -26,7 +26,6 @@ const createSendToken = (user, statusCode, res) => {
 
   res.cookie("jwt-cookie", token);
 
-
   // Remove password from output
   user.password = undefined;
 
@@ -51,7 +50,6 @@ exports.signUp = catchAsync(async (req, res) => {
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
-    passwordChangedAt: req.body.passwordChangedAt,
   });
 
   createSendToken(newUser, 201, res);
@@ -124,6 +122,9 @@ exports.protect = catchAsync(async (req, res, next) => {
     // grant access to the protected rout
     req.user = currentUser;
 
+    // GRANT ACCESS TO PROTECTED ROUTE
+    req.user = currentUser;
+    res.locals.user = currentUser;
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {

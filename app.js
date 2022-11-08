@@ -13,7 +13,6 @@ const globalErrorHandler = require("./controller/errController");
 
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
-const reviewRouter = require("./routes/reviewRoutes");
 
 const app = express();
 
@@ -64,16 +63,11 @@ app.use(
 app.use(compression());
 
 // page routes
-app.set("view engine", "ejs");
+app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 // Serving static files
 app.use(express.static(path.join(__dirname, "public")));
-
-// landing page
-app.get("/home", (req, res, next) => {
-  res.render("index");
-});
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/services", serviceRouter);
