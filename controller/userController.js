@@ -2,6 +2,39 @@ const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const handlerFactory = require("./handlerFactory");
+const multer = require("multer");
+
+/**
+ * user photos upload
+ */
+// giving the image a proper name
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/img/users");
+  },
+
+  // file name --> FORMAT = user-userid-timestamp.jpeg
+  filename: (req, file, cb) => {
+    const extention = file.mimetype.split("/")[1];
+    cb(null, `user-${req.user.id}-${Date.now()}.${extention}`);
+  },
+});
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
+  }
+};
+
+const options = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadUserPhoto = options.single("photo");
+// ==========================================
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -17,6 +50,9 @@ exports.getMe = (req, res, next) => {
   next();
 };
 exports.updateMe = catchAsync(async (req, res, next) => {
+  // console.log(req.file);
+  // console.log(req.body);
+
   // Check if user sends password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -29,6 +65,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   // filter out unwanted fields names
   const filteredBody = filterObj(req.body, "name", "email");
+  if (req.file) filteredBody.photo = req.file.filename;
 
   // Update user
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
