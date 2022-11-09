@@ -21,7 +21,12 @@ router.route("/:id").get(serviceController.getService);
 
 router
   .route("/:id")
-  .patch(authController.restrictTo("admin"), serviceController.updateService)
+  .patch(
+    authController.restrictTo("admin"),
+    serviceController.uploadServiceImages,
+    serviceController.resizServiceImages,
+    serviceController.updateService
+  )
   .delete(authController.restrictTo("admin"), serviceController.deleteService);
 
 module.exports = router;
