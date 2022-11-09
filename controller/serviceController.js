@@ -19,15 +19,18 @@ const options = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadServiceImages = options.fields([
-  { name: "coverImage", maxCount: 1 },
-  { name: "images", maxCount: 3 },
-]);
+exports.uploadServiceImages = options.single("coverImage");
 
-exports.resizServiceImages = (req, res, next) => {
-  if (!req.files) return next();
+exports.resizServiceCoverImage = async (req, res, next) => {
+  if (!req.file) return next();
 
-  console.log(req.files);
+  req.file.filename = `service-${req.params.id}-${Date.now()}.jpeg`;
+  await sharp(req.file.buffer)
+    .resize(2000, 1333)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/services/${req.file.filename}`);
+
   next();
 };
 

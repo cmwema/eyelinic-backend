@@ -24,7 +24,7 @@ router
   .patch(
     authController.restrictTo("admin"),
     serviceController.uploadServiceImages,
-    serviceController.resizServiceImages,
+    serviceController.resizServiceCoverImage,
     serviceController.updateService
   )
   .delete(authController.restrictTo("admin"), serviceController.deleteService);

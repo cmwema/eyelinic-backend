@@ -14,7 +14,7 @@ process.on("uncaughtException", (err) => {
 });
 
 mongoose
-  .connect(process.env.DATABASE_CLOUD, {
+  .connect(process.env.DATABASE_LOCAL, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useFindAndModify: false,
