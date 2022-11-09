@@ -51,7 +51,6 @@ const serviceSchema = new mongoose.Schema(
     coverImage: {
       type: String,
     },
-    images: [String],
 
     opticians: [
       {
