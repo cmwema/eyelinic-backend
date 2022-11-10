@@ -1,4 +1,6 @@
-main
+extends base
+
+block content
   #myCarousel.carousel.slide(data-bs-ride='carousel')
     .carousel-indicators
       button.active(type='button' data-bs-target='#myCarousel' data-bs-slide-to='0' aria-current='true' aria-label='Slide 1')
@@ -40,7 +42,7 @@ main
       span.visually-hidden Next
 
   //about us
-  .row.mt-5.mx-5
+  .row.mt-5.mx-md-5
     .col-12 
         h4.text-center.w-100.text-primary About Us
         hr
@@ -55,7 +57,7 @@ main
         .d-grid.gap-2.d-md-flex.justify-content-md-start
           
   //services
-  .row.mt-5.mx-5
+  .row.mt-5.mx-md-5
     .col-12 
         h4.text-center.w-100.text-primary Our Services
         hr
@@ -111,12 +113,12 @@ main
 
   //optitians
   //=========================================================================================
-  .row.mt-5.mx-5
+  .row.mt-5.mx-md-5
 
     .col-12 
       h4.text-center.w-100.text-primary Our Opticians
       hr
-  .row.mb-2.mx-5 
+  .row.mb-2.mx-md-5 
     .col-lg-4
       img.rounded-circle.mt-5(width='150px' src='/img/users/default.jpg')
         
@@ -144,7 +146,7 @@ main
         a.btn.btn-secondary(href='#') View details »
   
   //contact us
-  .row.mt-5.mx-5
+  .row.mt-5.mx-md-5
     .col-12
         h4.text-center.w-100.text-primary Contact Us
         hr

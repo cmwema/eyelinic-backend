@@ -1,24 +1,24 @@
-DOCTYPE 
+extends base
 
-
-.container.mx-4
-      .card.card-login.mx-5.mt-5
-        .card-header.bg-secondary.text-white.text-center
-          | Login
-        .card-body
-          form
-            .form-group
-              label(for='exampleInputEmail1') Email address
-              input#exampleInputEmail1.form-control.input-group-sm(type='email', aria-describedby='emailHelp', placeholder='Enter email')
-            .form-group
-              label(for='exampleInputPassword1') Password
-              input#exampleInputPassword1.form-control.input-group-sm(type='password', placeholder='Password')
-            .form-group
-              .form-check
-                label.form-check-label
-                  input.form-check-input(type='checkbox')
-                  |                   Remember Password
-            a.btn.btn-primary.btn-block(href='index.html') Login
-          .text-center
-            a.d-block.small.mt-3(href='#') Register an Account
-            a.d-block.small(href='#') Forgot Password?
+block content
+  .container-sm-fluid.mx-4.mb-5
+    .card.card-login.mx-md-5.mt-5
+      .card-header.bg-secondary.text-white.text-center
+        | Login
+      .card-body
+        form
+          .form-group
+            label(for='exampleInputEmail1') Email address
+            input#exampleInputEmail1.form-control.input-group-sm(type='email', aria-describedby='emailHelp', placeholder='Enter email')
+          .form-group
+            label(for='exampleInputPassword1') Password
+            input#exampleInputPassword1.form-control.input-group-sm(type='password', placeholder='Password')
+          .form-group
+            .form-check
+              label.form-check-label
+                input.form-check-input(type='checkbox')
+                |                   Remember Password
+          a.btn.btn-primary.btn-block.mt-3(href='index.html') Login
+        .text-center
+          a.d-block.small.mt-3.link-primary(href='/sign-up' style="text-decoration:none") Register an Account
+          a.d-block.small.link-primary(href='/forgot-password' style="text-decoration:none") Forgot Password?
