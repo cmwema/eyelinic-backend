@@ -1,0 +1,31 @@
+.container.rounded.bg-white
+    .row
+        .col-md-6.border-right.d-flex.flex-column.align-items-center.text-center.p-3.py-5
+            img.rounded-circle.mt-5(width='150px' src='/img/users/default.jpg')
+            input.text-center.m-3.form-control.w-50(type='text' placeholder='Full Name' value='Caleb Mwema')
+            span  
+        .col-md-6.border-right.p-3.py-5
+            .d-flex.justify-content-between.align-items-center.mb-3
+            h4.text-right Profile Settings
+            .row.mt-2          
+
+            fieldset.col-md-6(disabled='')
+                .mb-3
+                    label.form-label(for='role') Role
+                    input#role.form-control(type='text' placeholder='Disabled input' value='client')
+
+            .row.mt-3
+            .col-md-12
+                label.labels Mobile Number
+                input.form-control(type='text' placeholder='enter phone number' value='')         
+            
+                label.labels Email
+                input.form-control(type='text' placeholder='enter email id' value='')
+
+            .row.mt-3
+                .col-md-6
+                    .text-center
+                        button.btn.btn-primary.profile-button(type='button') Save Profile
+                .col-md-6
+                    .text-center
+                        button.btn.btn-primary.profile-button(type='button') Change Password
