@@ -70,8 +70,44 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.status(200).render("overview", {
-    title: "Home",
+  res.status(200).render("base", {
+    title: "home",
+  });
+});
+
+app.get("/sign-in", (req, res) => {
+  res.status(200).render("signin", {
+    title: "sign in",
+  });
+});
+
+app.get("/sign-up", (req, res) => {
+  res.status(200).render("signup", {
+    title: "sign up",
+  });
+});
+
+app.get("/forgot-password", (req, res) => {
+  res.status(200).render("forgotpassword", {
+    title: "forgot password",
+  });
+});
+
+app.get("/change-password", (req, res) => {
+  res.status(200).render("change-password", {
+    title: "change password",
+  });
+});
+
+app.get("/payment", (req, res) => {
+  res.status(200).render("payment", {
+    title: "payment",
+  });
+});
+
+app.get("/profile-settings", (req, res) => {
+  res.status(200).render("profile-settings", {
+    title: "profile settings",
   });
 });
 
