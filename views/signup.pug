@@ -4,25 +4,27 @@ block content
       .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
         .card-header.bg-secondary.text-white.text-center
           | Register an Account
-        .card-body.content-center
+        .card-body.p-md-5
           form
             .form-group
-              .form-row
-                .col-md-6
-                  label(for='exampleInputName') Full name
-                  input#exampleInputName.form-control(type='text', aria-describedby='nameHelp', placeholder='Enter full name')
+              
+              .my-2(for='InputName') Full name
+              .px-md-5 
+                input#InputName.form-control(type='text', aria-describedby='nameHelp', placeholder='Enter full name')
                 
             .form-group
-              label(for='exampleInputEmail1') Email address
-              input#exampleInputEmail1.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email')
+              .my-2(for='InputEmail1') Email address
+              .px-md-5
+                input#InputEmail1.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email')
             .form-group
-              .form-row
-                .col-md-6
-                  label(for='exampleInputPassword1') Password
-                  input#exampleInputPassword1.form-control(type='password', placeholder='Password')
-                .col-md-6
-                  label(for='exampleConfirmPassword') Confirm password
-                  input#exampleConfirmPassword.form-control(type='password', placeholder='Confirm password')
+          
+              .my-2(for='InputPassword1') Password
+              .px-md-5
+                input#InputPassword1.form-control(type='password', placeholder='Password')
+          
+              .my-2(for='ConfirmPassword') Confirm password
+              .px-md-5
+                input#ConfirmPassword.form-control(type='password', placeholder='Confirm password')
             a.btn.btn-primary.btn-block.mt-3(href='login.html') Register
           .text-center
             a.d-block.small.mt-3.link-primary(href='/sign-in' style="text-decoration:none") Login Page

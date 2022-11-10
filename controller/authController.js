@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 
 // creation of token
 const signToken = (id) => {
-  console.log(process.env.JWT_EXPIRES_IN);
+  // console.log(process.env.JWT_EXPIRES_IN);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     algorithm: "HS256",
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -57,18 +57,16 @@ exports.signUp = catchAsync(async (req, res) => {
 
 // log user
 exports.logIn = catchAsync(async (req, res, next) => {
-  const { phoneNumber, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!phoneNumber || !password) {
-    return next(
-      new AppError("Please provice phoneNumber and password!!!", 401)
-    );
+  if (!email || !password) {
+    return next(new AppError("Please provide email and password!!!", 401));
   }
 
-  const user = await User.findOne({ phoneNumber }).select("+password");
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Invalid phoneNumber or password!!!", 400));
+    return next(new AppError("Invalid email or password!!!", 400));
   }
   // console.log(user);
 
@@ -77,6 +75,49 @@ exports.logIn = catchAsync(async (req, res, next) => {
   // console.log(token);
   createSendToken(user, 200, res);
 });
+
+exports.isLoggedIn = async (req, res, next) => {
+  // // get token and check if its there
+
+  try {
+    if (req.cookies["jwt-cookie"]) {
+      const decoded = await promisify(jwt.verify)(
+        req.cookies["jwt-cookie"],
+        process.env.JWT_SECRET
+      );
+
+      // console.log(decoded);
+
+      // check if user still exists
+      const currentUser = await User.findById(decoded.id);
+
+      if (!currentUser) {
+        return next();
+      }
+
+      // check if user changed password after token was issued
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // there is a logged in user
+      res.locals.user = currentUser;
+      next();
+    }
+
+    next();
+  } catch (error) {
+    if (error.name === "JsonWebTokenError") {
+      next(new AppError("Invalid token. Please log in again!", 401));
+    }
+
+    if (error.name === "TokenExpiredError") {
+      next(new AppError("Your token has expired! Please log in again.", 401));
+    }
+
+    next(error);
+  }
+};
 
 // check whether user is signed in to access protected routes
 exports.protect = catchAsync(async (req, res, next) => {
@@ -89,6 +130,8 @@ exports.protect = catchAsync(async (req, res, next) => {
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies["jwt-cookie"]) {
+      token = req.cookies["jwt-cookie"];
     }
 
     if (!token) {
