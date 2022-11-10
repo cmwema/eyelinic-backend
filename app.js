@@ -7,12 +7,14 @@ const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const path = require("path");
 const compression = require("compression");
+const cookieParser = require("cookie-parser");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errController");
 
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
+const viewRouter = require("./routes/viewRoutes");
 
 const app = express();
 
@@ -38,6 +40,7 @@ app.use("/api", limiter);
 // body parser ---reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // data Sanitazation
 // NoSQL injection
@@ -69,54 +72,20 @@ app.set("views", path.join(__dirname, "views"));
 // Serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
-  res.status(200).render("base", {
-    title: "home",
-  });
+// test middleware
+app.use((req, res, next) => {
+  console.log(req.cookies);
+  next();
 });
 
-app.get("/sign-in", (req, res) => {
-  res.status(200).render("signin", {
-    title: "sign in",
-  });
-});
-
-app.get("/sign-up", (req, res) => {
-  res.status(200).render("signup", {
-    title: "sign up",
-  });
-});
-
-app.get("/forgot-password", (req, res) => {
-  res.status(200).render("forgotpassword", {
-    title: "forgot password",
-  });
-});
-
-app.get("/change-password", (req, res) => {
-  res.status(200).render("change-password", {
-    title: "change password",
-  });
-});
-
-app.get("/payment", (req, res) => {
-  res.status(200).render("payment", {
-    title: "payment",
-  });
-});
-
-app.get("/profile-settings", (req, res) => {
-  res.status(200).render("profile-settings", {
-    title: "profile settings",
-  });
-});
-
+app.use("/", viewRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/services", serviceRouter);
 
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+  res.status(404).render("error", {});
 });
 // 1) GLOBAL MIDDLEWARES
 // error handling
