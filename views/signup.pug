@@ -1,0 +1,27 @@
+.container.mx-4
+      .card.card-register.mx-5.mt-5
+        .card-header.bg-secondary.text-white.text-center
+          | Register an Account
+        .card-body
+          form
+            .form-group
+              .form-row
+                .col-md-6
+                  label(for='exampleInputName') Full name
+                  input#exampleInputName.form-control(type='text', aria-describedby='nameHelp', placeholder='Enter full name')
+                
+            .form-group
+              label(for='exampleInputEmail1') Email address
+              input#exampleInputEmail1.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email')
+            .form-group
+              .form-row
+                .col-md-6
+                  label(for='exampleInputPassword1') Password
+                  input#exampleInputPassword1.form-control(type='password', placeholder='Password')
+                .col-md-6
+                  label(for='exampleConfirmPassword') Confirm password
+                  input#exampleConfirmPassword.form-control(type='password', placeholder='Confirm password')
+            a.btn.btn-primary.btn-block.mt-3(href='login.html') Register
+          .text-center
+            a.d-block.small.mt-3(href='#') Login Page
+            a.d-block.small(href='#') Forgot Password?

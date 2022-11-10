@@ -69,6 +69,12 @@ app.set("views", path.join(__dirname, "views"));
 // Serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get("/", (req, res) => {
+  res.status(200).render("overview", {
+    title: "Home",
+  });
+});
+
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/services", serviceRouter);
 

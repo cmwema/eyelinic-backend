@@ -1,0 +1,151 @@
+main
+  #myCarousel.carousel.slide(data-bs-ride='carousel')
+    .carousel-indicators
+      button.active(type='button' data-bs-target='#myCarousel' data-bs-slide-to='0' aria-current='true' aria-label='Slide 1')
+      button(type='button' data-bs-target='#myCarousel' data-bs-slide-to='1' aria-label='Slide 2')
+      button(type='button' data-bs-target='#myCarousel' data-bs-slide-to='2' aria-label='Slide 3')
+    .carousel-inner
+      .carousel-item.active
+        svg.bd-placeholder-img(width='100%' height='100%' src='/img/courosel1.jpg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' )
+          rect(width='100%' height='100%' )
+        .container
+          .carousel-caption.text-start
+            h1 Example headline.
+            p Some representative placeholder content for the first slide of the carousel.
+            p
+              a.btn.btn-lg.btn-primary(href='#') Sign up today
+      .carousel-item
+        svg.bd-placeholder-img(width='100%' height='100%' src='/img/courosel1.jpg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' )
+          rect(width='100%' height='100%' )
+        .container
+          .carousel-caption
+            h1 Another example headline.
+            p Some representative placeholder content for the second slide of the carousel.
+            p
+              a.btn.btn-lg.btn-primary(href='#') Learn more
+      .carousel-item
+        svg.bd-placeholder-img(width='100%' height='100%' src='/img/courosel1.jpg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' )
+          rect(width='100%' height='100%' )
+        .container
+          .carousel-caption.text-end
+            h1 One more for good measure.
+            p Some representative placeholder content for the third slide of this carousel.
+            p
+              a.btn.btn-lg.btn-primary(href='#') Browse gallery
+    button.carousel-control-prev(type='button' data-bs-target='#myCarousel' data-bs-slide='prev')
+      span.carousel-control-prev-icon(aria-hidden='true')
+      span.visually-hidden Previous
+    button.carousel-control-next(type='button' data-bs-target='#myCarousel' data-bs-slide='next')
+      span.carousel-control-next-icon(aria-hidden='true')
+      span.visually-hidden Next
+
+  //about us
+  .row.mt-5.mx-5
+    .col-12 
+        h4.text-center.w-100.text-primary About Us
+        hr
+  .container.col-xxl-8.px-4.py-5
+    .row.flex-lg-row-reverse.align-items-center.g-5.py-5
+      .col-10.col-sm-8.col-lg-6
+        img.d-block.mx-lg-auto.img-fluid(src='/img/about.png' alt='glasses' width='700' height='500' loading='lazy')
+      .col-lg-6
+        
+        p.lead
+          | Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia fugit, molestias aut voluptatibus numquam atque, odit cumque explicabo alias dolorum labore officiis, magnam rerum debitis. Ipsam, assumenda. Inventore, aut officiis quia quasi odio, repellendus debitis eius repudiandae quisquam rerum dignissimos!
+        .d-grid.gap-2.d-md-flex.justify-content-md-start
+          
+  //services
+  .row.mt-5.mx-5
+    .col-12 
+        h4.text-center.w-100.text-primary Our Services
+        hr
+
+  #custom-cards.container.px-4.py-5
+  h2.pb-2.border-bottom Custom cards
+  .row.row-cols-1.row-cols-lg-3.align-items-stretch.g-4.py-5
+    .col
+      .card.card-cover.h-100.overflow-hidden.text-white.bg-dark.rounded-5.shadow-lg(style="background-image: url('/img/service1.jpg'); background-size: cover;")
+        .d-flex.flex-column.h-100.p-5.pb-3.text-white.text-shadow-1
+          h2.pt-5.mt-5.mb-4.display-6.lh-1.fw-bold Short title, long jacket
+          ul.d-flex.list-unstyled.mt-auto
+            li.me-auto
+              img.rounded-circle.border.border-white(src='/img/service1.jpg' alt='' width='32' height='32')
+            li.d-flex.align-items-center.me-3
+              svg.bi.me-2(width='1em' height='1em')
+                use(xlink:href='#geo-fill')
+              small Earth
+            li.d-flex.align-items-center
+              svg.bi.me-2(width='1em' height='1em')
+                use(xlink:href='#calendar3')
+              small 3d
+    .col
+      .card.card-cover.h-100.overflow-hidden.text-white.bg-dark.rounded-5.shadow-lg(style="background-image: url('/img/service2.jpg');background-size: cover;")
+        .d-flex.flex-column.h-100.p-5.pb-3.text-white.text-shadow-1
+          h2.pt-5.mt-5.mb-4.display-6.lh-1.fw-bold Much longer title that wraps to multiple lines
+          ul.d-flex.list-unstyled.mt-auto
+            li.me-auto
+              img.rounded-circle.border.border-white(src='/img/service2.jpg' alt='' width='32' height='32')
+            li.d-flex.align-items-center.me-3
+              svg.bi.me-2(width='1em' height='1em')
+                use(xlink:href='#geo-fill')
+              small Pakistan
+            li.d-flex.align-items-center
+              svg.bi.me-2(width='1em' height='1em')
+                use(xlink:href='#calendar3')
+              small 4d
+    .col
+      .card.card-cover.h-100.overflow-hidden.text-white.bg-dark.rounded-5.shadow-lg(style="background-image: url('/img/service3.jpg');background-size: cover;")
+        .d-flex.flex-column.h-100.p-5.pb-3.text-shadow-1
+          h2.pt-5.mt-5.mb-4.display-6.lh-1.fw-bold Another longer title belongs here
+          ul.d-flex.list-unstyled.mt-auto
+            li.me-auto
+              img.rounded-circle.border.border-white(src='/img/service3.jpg' alt='' width='32' height='32')
+            li.d-flex.align-items-center.me-3
+              svg.bi.me-2(width='1em' height='1em')
+                use(xlink:href='#geo-fill')
+              small California
+            li.d-flex.align-items-center
+              svg.bi.me-2(width='1em' height='1em')
+                use(xlink:href='#calendar3')
+              small 5d
+
+  //optitians
+  //=========================================================================================
+  .row.mt-5.mx-5
+
+    .col-12 
+      h4.text-center.w-100.text-primary Our Opticians
+      hr
+  .row.mb-2.mx-5 
+    .col-lg-4
+      img.rounded-circle.mt-5(width='150px' src='/img/users/default.jpg')
+        
+      h2 Heading
+      p
+        | Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, ut?Lorem ipsum dolor sit.
+      p
+        a.btn.btn-secondary(href='#') View details »
+
+    .col-lg-4
+      img.rounded-circle.mt-5(width='150px' src='/img/users/default.jpg')
+        
+      h2 Heading
+      p
+        | Another exciting bit of representative placeholder content. This time, we've moved on to the second column.
+      p
+        a.btn.btn-secondary(href='#') View details »
+
+    .col-lg-4
+      img.rounded-circle.mt-5(width='150px' src='/img/users/default.jpg')
+        
+      h2 Heading
+      p And lastly this, the third column of representative placeholder content.
+      p
+        a.btn.btn-secondary(href='#') View details »
+  
+  //contact us
+  .row.mt-5.mx-5
+    .col-12
+        h4.text-center.w-100.text-primary Contact Us
+        hr
+    
