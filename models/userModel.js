@@ -30,12 +30,6 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "optician", "client"],
       default: "client",
     },
-    phoneNumber: {
-      type: String,
-      require: [true, "User must have a phone number"],
-      unique: true,
-      match: /^((\+)254|0)[1-9](\d{2}){4}$/,
-    },
     email: {
       type: mongoose.SchemaTypes.Email,
       required: [true, "A user must have an email account"],
@@ -78,44 +72,9 @@ const userSchema = new mongoose.Schema(
 userSchema.set("toObject", { virtuals: true });
 userSchema.set("toJSON", { virtuals: true });
 
-// check for correct password -->> for log in
-userSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
-
-// check if password was changed after token was issued
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
-  if (this.passwordChangedAt) {
-    const changedTimestamp = parseInt(
-      this.passwordChangedAt.getTime() / 1000,
-      10
-    );
-    // console.log(changedTimestamp, JWTTimestamp);
-    return JWTTimestamp < changedTimestamp;
-  }
-  return false;
-};
-
-// calculate age
-// userSchema.virtual("age").get(function () {
-//   const currentYear = new Date().getFullYear();
-//   const yearOfBirth = new Date(this.dateOfBirth).getFullYear();
-//   return currentYear - yearOfBirth;
-// });
-
 // querry middlewares
 userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } }); //query only for active users
-  next();
-});
-
-// aggregate middlewares
-userSchema.pre("aggregate", function (next) {
-  this.pipeline().unshift({ $match: { active: { $ne: false } } });
-
   next();
 });
 

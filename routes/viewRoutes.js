@@ -1,9 +1,6 @@
 const express = require("express");
 const viewController = require("../controller/viewController");
-const authController = require("../controller/authController");
 const router = express.Router();
-
-router.use(authController.isLoggedIn);
 
 router.get("/", viewController.overview);
 

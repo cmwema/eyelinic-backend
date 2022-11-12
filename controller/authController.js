@@ -47,12 +47,9 @@ exports.signUp = catchAsync(async (req, res) => {
   const newUser = await User.create({
     name: req.body.name,
     password: await bcrypt.hash(req.body.password, salt),
-    phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
   });
-
-  createSendToken(newUser, 201, res);
 });
 
 // log user
@@ -227,7 +224,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: "Your password reset token (valid in 10min)",
+      subject: "Your pass word reset token (valid in 10min)",
       message,
     });
 

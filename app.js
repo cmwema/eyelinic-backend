@@ -8,10 +8,14 @@ const hpp = require("hpp");
 const path = require("path");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
+// controllers // utilify functions
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errController");
 
+// Routes
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
 const viewRouter = require("./routes/viewRoutes");
@@ -85,10 +89,46 @@ app.use("/api/v1/services", serviceRouter);
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
-  res.status(404).render("error", {});
 });
 // 1) GLOBAL MIDDLEWARES
 // error handling
 app.use(globalErrorHandler);
 
-module.exports = app;
+// server
+
+dotenv.config({ path: "./config.env" });
+
+mongoose
+  .connect(process.env.DATABASE_LOCAL, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  })
+  .then((con) => {
+    console.log("Database connected successfully!!");
+  });
+
+const PORT = process.env.PORT || 3000;
+
+const server = app.listen(PORT, () => {
+  console.log(`Server Running on port ${PORT}`);
+});
+
+process.on("uncaughtException", (err) => {
+  console.log(err.name, err.message);
+  console.log("UnhandledException:    shutting down.....");
+
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log(err);
+  // console.log("UnhandledRejection:    shutting down.....");
+
+  server.close(() => {
+    process.exit(1);
+  });
+});
