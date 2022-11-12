@@ -6,27 +6,27 @@ block content
         .card-header.bg-secondary.text-white.text-center
           | Register an Account
         .card-body.p-md-5
-          form
+          form(action='/signup' method='POST')
             .form-group
               
               .my-2(for='InputName') Full name
               .px-md-5 
-                input#InputName.form-control(type='text', aria-describedby='nameHelp', placeholder='Enter full name')
+                input#InputName.form-control(type='text', name="username" aria-describedby='nameHelp', placeholder='Enter full name')
                 
             .form-group
               .my-2(for='InputEmail1') Email address
               .px-md-5
-                input#InputEmail1.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email')
+                input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email')
             .form-group
           
               .my-2(for='InputPassword1') Password
               .px-md-5
-                input#InputPassword1.form-control(type='password', placeholder='Password')
+                input#InputPassword1.form-control(type='password', name="password" placeholder='Password')
           
-              .my-2(for='ConfirmPassword') Confirm password
-              .px-md-5
-                input#ConfirmPassword.form-control(type='password', placeholder='Confirm password')
-            a.btn.btn-primary.btn-block.mt-3(href='login.html') Register
+              //- .my-2(for='ConfirmPassword') Confirm password
+              //- .px-md-5
+              //-   input#ConfirmPassword.form-control(type='password', placeholder='Confirm password')
+            input.btn.btn-primary.btn-block.mt-3(type="submit", value="Sign Up")
           .text-center
             a.d-block.small.mt-3.link-primary(href='/sign-in' style="text-decoration:none") Login Page
             a.d-block.small.link-primary(href='/forgot-password' style="text-decoration:none") Forgot Password?

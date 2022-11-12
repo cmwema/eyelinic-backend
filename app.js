@@ -1,15 +1,16 @@
 const express = require("express");
-const rateLimit = require("express-rate-limit");
-const morgan = require("morgan");
 const helmet = require("helmet");
 const xssClean = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const path = require("path");
 const compression = require("compression");
-const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const passport = require("passport");
+const passportLocal = require("passport-local");
+const session = require("express-session");
+const User = require("./models/userModel");
 
 // controllers // utilify functions
 const AppError = require("./utils/appError");
@@ -18,42 +19,25 @@ const globalErrorHandler = require("./controller/errController");
 // Routes
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
-const viewRouter = require("./routes/viewRoutes");
 
 const app = express();
 
-/**
- * MIDDLEWARES
- */
-// Set security HTTP headers
-app.use(helmet());
+dotenv.config({ path: "./config.env" });
 
-// Development logging
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-
-// limit requests per hour comming from same IP
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: "Too many requests from this IP please try again in an hour",
-});
-app.use("/api", limiter);
-
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
 // body parser ---reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
+// Set security HTTP headers
+app.use(helmet());
+// limit requests per hour comming from same IP
 
 // data Sanitazation
-// NoSQL injection
 app.use(mongoSanitize());
-
-// cress site scripting
 app.use(xssClean());
-
-// preventing parameter pollution
 app.use(
   hpp({
     whitelist: [
@@ -65,26 +49,56 @@ app.use(
     ],
   })
 );
-
-// compress responses(html/ json)
 app.use(compression());
 
-// page routes
-app.set("view engine", "pug");
-app.set("views", path.join(__dirname, "views"));
+// express session config
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-// Serving static files
-app.use(express.static(path.join(__dirname, "public")));
+// passport config
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+const LocalStrategy = passportLocal.Strategy;
+passport.use(new LocalStrategy(User.authenticate()));
 
-// test middleware
-app.use((req, res, next) => {
-  console.log(req.cookies);
-  next();
-});
-
-app.use("/", viewRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/services", serviceRouter);
+
+app.get("/profile", (req, res) => {
+  res.render("profile", { user: req.user });
+});
+
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+app.post("/signup", async (req, res) => {
+  try {
+    const newUser = await User.register(
+      new User({
+        username: req.body.username,
+        email: req.body.email,
+      }),
+      req.body.password
+    );
+
+    console.log(newUser);
+
+    // log in user
+    passport.authenticate("local")(req, res, () => {
+      res.redirect("/profile");
+    });
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
@@ -95,8 +109,6 @@ app.all("*", (req, res, next) => {
 app.use(globalErrorHandler);
 
 // server
-
-dotenv.config({ path: "./config.env" });
 
 mongoose
   .connect(process.env.DATABASE_LOCAL, {

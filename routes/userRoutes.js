@@ -14,22 +14,13 @@ router.get(
 
 router.patch("/update-my-Password");
 
-router.patch(
-  "/update-me",
-  userController.uploadUserPhoto,
-  userController.resizeUserPhoto,
-  userController.updateMe
-);
 router.delete("/delete-me", userController.deleteMe);
 
 /**
  * ADMIN ROUTES
  */
 
-router
-  .route("/")
-  .get(userController.getAllUsers)
-  .post(userController.createUser);
+router.route("/").get(userController.getAllUsers);
 
 router
   .route("/:id")
