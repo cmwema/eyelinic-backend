@@ -114,6 +114,19 @@ app.post(
   })
 );
 
+app.get("/signout", (req, res, next) => {
+  try {
+    req.logout(function (err) {
+      if (err) {
+        throw err;
+      }
+      res.redirect("/signin");
+    });
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
@@ -151,8 +164,6 @@ process.on("uncaughtException", (err) => {
 
 process.on("unhandledRejection", (err) => {
   console.log(err);
-  // console.log("UnhandledRejection:    shutting down.....");
-
   server.close(() => {
     process.exit(1);
   });
