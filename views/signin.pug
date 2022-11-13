@@ -6,21 +6,16 @@ block content
       .card-header.bg-secondary.text-white.text-center
         | Login
       .card-body.p-md-5
-        form
+        form(action='/signin' method='POST')
           .form-group
-            label.my-2(for='exampleInputEmail1') Email address
+            label.my-2(for='exampleInputEmail1') User Name
             .px-md-5
-              input#email.form-control.input-group-sm(type='email', aria-describedby='emailHelp', placeholder='Enter email')
+              input#email.form-control.input-group-sm(type='text', name="username" placeholder='email')
           .form-group
-            label.my-2(for='exampleInputPassword1') Password
+            label.my-2(for='password') Password
             .px-md-5
-              input#password.form-control.input-group-sm(type='password', placeholder='Password')
-          .form-group
-            .form-check
-              label.form-check-label
-                input.form-check-input(type='checkbox')
-                |                   Remember Password
+              input#password.form-control.input-group-sm(type='password',  name="password", placeholder='Password')
           input.btn.btn-primary.btn-block.mt-3(type="submit", value="Login") 
         .text-center
-          a.d-block.small.mt-3.link-primary(href='/sign-up' style="text-decoration:none") Register an Account
+          a.d-block.small.mt-3.link-primary(href='/signup' style="text-decoration:none") Register an Account
           a.d-block.small.link-primary(href='/forgot-password' style="text-decoration:none") Forgot Password?

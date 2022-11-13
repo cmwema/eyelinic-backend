@@ -75,6 +75,7 @@ app.get("/profile", (req, res) => {
   res.render("profile", { user: req.user });
 });
 
+// sign up routes
 app.get("/signup", (req, res) => {
   res.render("signup");
 });
@@ -100,16 +101,28 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// login routes
+app.get("/signin", (req, res) => {
+  res.render("signin");
+});
+
+app.post(
+  "/signin",
+  passport.authenticate("local", {
+    successRedirect: "/profile",
+    failureRedirect: "/signin",
+  })
+);
+
 // for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
-// 1) GLOBAL MIDDLEWARES
+
 // error handling
 app.use(globalErrorHandler);
 
 // server
-
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useCreateIndex: true,
