@@ -1,9 +1,7 @@
 const router = require("express").Router({ mergeParams: true });
 const { authorization } = require("paypal-rest-sdk");
-const authController = require("./../controller/authController");
-const reviewController = require("./../controller/reviewController");
-
-router.use(authController.protect);
+const authController = require("./../controllers/authController");
+const reviewController = require("./../controllers/reviewController");
 
 router
   .route("/")

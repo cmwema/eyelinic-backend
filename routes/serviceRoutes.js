@@ -1,21 +1,15 @@
 const router = require("express").Router();
 
-const serviceController = require("./../controller/serviceController");
-const authController = require("./../controller/authController");
+const serviceController = require("./../controllers/serviceController");
+const authController = require("./../controllers/authController");
 const reviewRouter = require("./reviewRoutes");
 
 router
   .route("/")
   .get(serviceController.getAllServices)
-  .post(
-    authController.protect,
-    authController.restrictTo("admin"),
-    serviceController.createService
-  );
+  .post(authController.restrictTo("admin"), serviceController.createService);
 
 router.use("/:serviceId/reviews", reviewRouter);
-
-router.use(authController.protect);
 
 router.route("/:id").get(serviceController.getService);
 

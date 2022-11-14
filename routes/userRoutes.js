@@ -1,41 +1,42 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 // controllers
-const authController = require("./../controller/authController");
-const userController = require("./../controller/userController");
+const authController = require("./../controllers/authController");
+const userController = require("./../controllers/userController");
 
-/**
- * UNPROTECTED ROUTES -> Do not require user to be logged in
- */
-router.post("/sign-up", authController.signUp);
-router.post("/log-in", authController.logIn);
-// router.get("/forgot-password", authController.forgotPassword);
-router.post("/forgot-password", authController.forgotPassword);
-// router.get("/reset-password/:token", authController.resetPassword);
-router.patch("/reset-password/:token", authController.resetPassword);
+// sign up routes
+router
+  .route("/signup")
+  .get(authController.getSignUp)
+  .post(authController.postSignUp);
+
+router.route("/login").get(authController.getLogIn);
+router.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/api/v1/users/login" }),
+  function (req, res) {
+    // console.log(req.user);
+    res.redirect("/api/v1/users/dashboard");
+  }
+);
+
+router.route("/signout").get(authController.getLogout);
 
 /**
  * PROTECTED ROUTES
  */
 
-/**
- * USER ROUTES
- */
-router.use(authController.protect);
+router.use(authController.isLoggedIn);
 
-router.get(
-  "/me",
+router.get("/dashboard", (req, res) => {
+  res.render("dashboard", { user: req.user });
+});
 
-  userController.getMe,
-  userController.getUser
-);
+router.get("/me", userController.getMe, userController.getUser);
 
-router.patch(
-  "/update-my-Password",
-
-  authController.updateMyPassword
-);
+router.patch("/update-my-Password", authController.updateMyPassword);
 
 router.patch(
   "/update-me",

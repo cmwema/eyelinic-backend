@@ -7,26 +7,57 @@ const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const path = require("path");
 const compression = require("compression");
-
+const passport = require("passport");
+const session = require("express-session");
+const passportLocal = require("passport-local");
+const User = require("./models/userModel");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const AppError = require("./utils/appError");
-const globalErrorHandler = require("./controller/errController");
+const globalErrorHandler = require("./controllers/errController");
+const flash = require("connect-flash");
 
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
-
+const reviewRouter = require("./routes/reviewRoutes");
+const viewRouter = require("./routes/viewRoutes");
+const bookingRouter = require("./routes/bookingRoutes");
 const app = express();
 
-/**
- * MIDDLEWARES
- */
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: false }));
+
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// express session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(flash());
+// passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// creating local strategy
+const LocalStrategy = passportLocal.Strategy;
+passport.use(new LocalStrategy(User.authenticate()));
+
 // Set security HTTP headers
 app.use(helmet());
-
 // Development logging
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
 // limit requests per hour comming from same IP
 const limiter = rateLimit({
   max: 100,
@@ -35,11 +66,6 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-// body parser ---reading data from body into req.body
-app.use(express.json({ limit: "10kb" }));
-app.use(express.urlencoded({ extended: false }));
-
-// data Sanitazation
 // NoSQL injection
 app.use(mongoSanitize());
 
@@ -58,23 +84,18 @@ app.use(
     ],
   })
 );
-
 // compress responses(html/ json)
 app.use(compression());
 
 // page routes
-app.set("view engine", "pug");
-app.set("views", path.join(__dirname, "views"));
-
-// Serving static files
-app.use(express.static(path.join(__dirname, "public")));
-
-app.use("/api/v1/users", userRouter);
+app.use("/", viewRouter);
 app.use("/api/v1/services", serviceRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/bookings", bookingRouter);
 
-// for unhandled url requests(invalid urls)
 app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 // 1) GLOBAL MIDDLEWARES
 // error handling
