@@ -22,35 +22,37 @@ router.post(
   }
 );
 
-router.route("/signout").get(authController.getLogout);
-
 /**
  * PROTECTED ROUTES
  */
+router.get("/signout", authController.isLoggedIn, authController.getLogout);
 
-router.use(authController.isLoggedIn);
-
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", authController.isLoggedIn, (req, res) => {
   res.render("dashboard", { user: req.user });
 });
 
-router.get("/me", userController.getMe, userController.getUser);
+router.get("/profile-settings", authController.isLoggedIn, (req, res) => {
+  res.render("profile-settings", { user: req.user });
+});
 
-router.patch("/update-my-Password", authController.updateMyPassword);
+router
+  .route("/forgot-password")
+  .get(authController.getForgotPassword)
+  .post(authController.postForgotPassword);
 
-router.patch(
-  "/update-me",
+router.post(
+  "/update-profile",
+  authController.isLoggedIn,
   userController.uploadUserPhoto,
   userController.resizeUserPhoto,
   userController.updateMe
 );
-router.delete("/delete-me", userController.deleteMe);
+
+router.delete("/delete-me", authController.isLoggedIn, userController.deleteMe);
 
 /**
  * ADMIN ROUTES
  */
-
-router.use(authController.restrictTo("admin"));
 
 router
   .route("/")

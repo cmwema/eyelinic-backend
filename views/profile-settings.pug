@@ -1,0 +1,69 @@
+extends base
+
+block content
+  .container-fluid.mx-md-5.p-2
+    .row
+      // Profile Sidebar
+      .col-md-4
+        .profile-sidebar
+          .widget-profile.pro-widget-content.mx-5.px-5
+            .profile-info-widget
+              a.booking-doc-img(href='#')
+                img.m-2(src=`/img/users/${user.photo}` alt='User Image' style='border-radius: 50%; width: 100px; height: 100px;')
+            .profile-det-info
+              h4= user.username
+              
+          .dashboard-widget.px-5.float-start
+            nav.dashboard-menu.container
+              .row.justify-content-center                      
+                 
+                  a(href='#' style="text-decoration:none; height=:20px" class='btn btn-outline-primary m-2 h-75')
+                    i.fas.fa-lock
+                      span View bookings
+              
+                
+                  a(href='/api/v1/users/changepassword' style="text-decoration:none;" class='btn btn-outline-primary m-2 h-75')
+                    i.fas.fa-lock
+                      span Change Password
+              
+                
+                  a(href='/users/signout' style="text-decoration:none;" class='btn btn-outline-primary m-2 h-75')
+                    i.fas.fa-sign-out-alt
+                      span Logout
+      // /Profile Sidebar
+      .col-md-8
+        .card
+          .card-body
+            // Profile Settings Form
+            form(action='/api/v1/users/update-prifile' method='POST')
+              .row.form-row
+                .col-12.col-md-12.mb-4
+                  .form-group
+                    .change-avatar
+                      .profile-img.mb-3
+                        img(src=`/img/users/${user.photo}` alt='User Image' style='width: 100px; height:100px; border-radius:50%;')
+                      .upload-img.mb-2
+                        .change-photo-btn
+                          span
+                            i.fa.fa-upload
+                            |  Upload Photo
+                          input.upload(type='file' name="name")
+                        small.form-text.text-muted (Allowed JPG or PNG. Max size of 2MB)
+                .col-12.col-md-6
+                  .form-group.my-3
+                    label First Name
+                    input.form-control(type='text' name="fname" value=`${user.username.split(' ')[0]}`)
+                .col-12.col-md-6
+                  .form-group.my-3
+                    label Last Name
+                    input.form-control(type='text' name="lname" value=`${user.username.split(' ')[1]}`)
+                br
+                .col-12.col-md-6
+                  .form-group.my-3
+                    label E-mail
+                    input.form-control(type='email' name="email" value=`${user.email}`)
+                br
+                
+                .submit-section
+                  button.btn.btn-primary.submit-btn(type='submit') Save Changes
+                // /Profile Settings Form

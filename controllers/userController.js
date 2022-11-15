@@ -51,9 +51,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 exports.getMe = (req, res, next) => {
-  req.params.id = req.user.id;
-
-  next();
+  res.render("profile-settings", { user: req.user });
 };
 exports.updateMe = catchAsync(async (req, res, next) => {
   // console.log(req.file);
@@ -70,21 +68,16 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
 
   // filter out unwanted fields names
-  const filteredBody = filterObj(req.body, "name", "email");
+  const filteredBody = filterObj(req.body, "username", "email");
   if (req.file) filteredBody.photo = req.file.filename;
 
   // Update user
-  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+  await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
   });
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      user: updatedUser,
-    },
-  });
+  res.redirect("/api/v1/users/dashboard");
 });
 
 // deleting the current user account

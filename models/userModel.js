@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema(
         ref: "Booking",
       },
     ],
+
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
 
   { versionKey: false }
@@ -69,6 +73,21 @@ userSchema.virtual("age").get(function () {
   const yearOfBirth = new Date(this.dateOfBirth).getFullYear();
   return currentYear - yearOfBirth;
 });
+
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 
 // querry middlewares
 userSchema.pre(/^find/, function (next) {
