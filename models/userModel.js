@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
 const passportLocalMongoose = require("passport-local-mongoose");
-
+const crypto = require("crypto");
 const userSchema = new mongoose.Schema(
   {
     username: {
