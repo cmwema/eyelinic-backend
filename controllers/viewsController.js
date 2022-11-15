@@ -8,6 +8,9 @@ exports.getHome = catchAsync(async (req, res, next) => {
   res.render("home");
 });
 
+exports.getAbout = (req, res) => {
+  res.render("about");
+};
 exports.getService = catchAsync(async (req, res, next) => {
   // 1) Get the data, for the requested tour (including reviews and guides)
   const service = await Service.findOne({ slug: req.params.slug }).populate({
