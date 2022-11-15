@@ -1,0 +1,21 @@
+extends base
+
+block content
+  .container-sm-fluid.mx-4.mb-5
+    .card.card-login.mx-md-5.mt-5
+      .card-header.bg-secondary.text-white.text-center
+        | Login
+      .card-body.p-md-5
+        form(action='/api/v1/users/login' method='POST')
+          .form-group
+            label.my-2(for='exampleInputEmail1') Full name
+            .px-md-5
+              input#email.form-control.input-group-sm(type='text', name="username" placeholder='username')
+          .form-group
+            label.my-2(for='password') Password
+            .px-md-5
+              input#password.form-control.input-group-sm(type='password',  name="password", placeholder='Password')
+          input.btn.btn-primary.btn-block.mt-3(type="submit", value="Login") 
+        .text-center
+          a.d-block.small.mt-3.link-primary(href='/api/v1/users/signup' style="text-decoration:none") Register an Account
+          a.d-block.small.link-primary(href='/api/v1/users/forgot-password' style="text-decoration:none") Forgot Password?

@@ -1,0 +1,37 @@
+extends base
+
+block content
+  .container-sm-fluid.mx-4.mb-5
+      .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
+        .card-header.bg-secondary.text-white.text-center
+          | Register an Account
+        .card-body.p-md-5
+          form(action='/api/v1/users/signup' method='POST')
+            .form-group
+              
+              .my-2(for='InputName') Full Name
+              .px-md-5 
+                input#InputName.form-control(type='text', name="username" aria-describedby='nameHelp', placeholder='Enter full name')
+                
+            .form-group
+              .my-2(for='InputEmail1') Email address
+              .px-md-5
+                input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email')
+            .form-group
+              .my-2(for='date_of_birth') Date of Birth
+              .px-md-5
+                input#date_of_birth.form-control(type='date', name="dateOfBirth" aria-describedby='emailHelp', min='1900-01-01', max=`${new Date().getFullYear() - 18}-${new Date().getMonth()}-${new Date().getDate() - 1}`, placeholder='Enter date of birth')
+            
+            .form-group
+              //, 
+              .my-2(for='InputPassword1') Password
+              .px-md-5
+                input#InputPassword1.form-control(type='password', name="password" placeholder='Password')
+              .my-2(for='confrim-password') Confirm Password
+              .px-md-5
+                input#confrim-password.form-control(type='password', name="passwordConfirm" placeholder='Password')
+          
+            input.btn.btn-primary.btn-block.mt-3(type="submit", value="Sign Up")
+          .text-center
+            a.d-block.small.mt-3.link-primary(href='/api/v1/users/login' style="text-decoration:none") Login Page
+            a.d-block.small.link-primary(href='/api/v1/users/forgot-password' style="text-decoration:none") Forgot Password?

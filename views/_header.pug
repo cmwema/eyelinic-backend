@@ -1,0 +1,35 @@
+.container-fluid.bg-dark.px-3
+  header(class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3  border-bottom")
+    if user
+      ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
+        li
+          a(href="/api/v1/users/dashboard" class="nav-link px-2 link-secondary " style="text-decoration: none;") Dashboard
+        li
+          a(href="/api/v1/users/profile-settings" class="nav-link px-2 link-light " style="text-decoration: none;") profile-settings
+        li
+          a(href="#" class="nav-link px-2 link-light " style="text-decoration: none;") Services
+        li
+          a(href="#" class="nav-link px-2 link-light " style="text-decoration: none;") Bookings
+        li
+          a(href="#" class="nav-link px-2 link-light " style="text-decoration: none;") help
+      div(class="col-md-3 text-end")
+        a(href="/api/v1/users/signout" class="btn btn-outline-danger text-light me-2 btn--custom" style="text-decoration: none;") Log out
+        
+        img(src=`/img/users/default.jpg` alt=`Photo of user` style='width: 40px; height: 40px; border-radius: 50%;')
+
+    else
+      ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
+        li
+          a(href="/" class="nav-link px-2 link-secondary " style="text-decoration: none;") Home
+        li
+          a(href="#" class="nav-link px-2 link-light " style="text-decoration: none;") About
+        li
+          a(href="#" class="nav-link px-2 link-light " style="text-decoration: none;") Services
+        li
+          a(href="#" class="nav-link px-2 link-light " style="text-decoration: none;") Contact
+      div(class="col-md-3 text-end")    
+        
+        a.btn--custom(href="/api/v1/users/login" class="btn btn-outline-primary text-light me-2 btn--custom" style="text-decoration: none;")  Login
+        
+        a.btn--custom(href="/api/v1/users/signup" class="btn btn-outline-primary text-light me-2 btn--custom" style="text-decoration: none;") Sign up
+

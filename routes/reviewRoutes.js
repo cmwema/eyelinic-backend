@@ -6,16 +6,12 @@ const reviewController = require("./../controllers/reviewController");
 router
   .route("/")
   .get(reviewController.getAllReviews)
-  .post(
-    authController.restrictTo("client"),
-    reviewController.createServiceUserIds,
-    reviewController.createReview
-  );
+  .post(reviewController.createServiceUserIds, reviewController.createReview);
 
 router
   .route("/:id")
   .get(reviewController.getReview)
-  .patch(authController.restrictTo("client"), reviewController.updateReview)
-  .delete(authController.restrictTo("client"), reviewController.deleteReview);
+  .patch(reviewController.updateReview)
+  .delete(reviewController.deleteReview);
 
 module.exports = router;
