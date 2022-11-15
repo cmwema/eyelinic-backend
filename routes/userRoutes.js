@@ -32,13 +32,10 @@ router.get("/dashboard", authController.isLoggedIn, (req, res) => {
 });
 
 router.get("/profile-settings", authController.isLoggedIn, (req, res) => {
-  res.render("profile-settings", { user: req.user });
+  console.log(req.user);
+  const user = req.user;
+  res.render("profile-settings", { user: user });
 });
-
-router
-  .route("/forgot-password")
-  .get(authController.getForgotPassword)
-  .post(authController.postForgotPassword);
 
 router.post(
   "/update-profile",
@@ -47,6 +44,13 @@ router.post(
   userController.resizeUserPhoto,
   userController.updateMe
 );
+
+router
+  .route("/forgot-password")
+  .get(authController.getForgotPassword)
+  .post(authController.postForgotPassword);
+
+router.route("/resetPassword").get().post();
 
 router.delete("/delete-me", authController.isLoggedIn, userController.deleteMe);
 

@@ -1,69 +1,40 @@
 extends base
 
 block content
-  .container-fluid.mx-md-5.p-2
-    .row
-      // Profile Sidebar
+  .container-fluid 
+    .row 
       .col-md-4
-        .profile-sidebar
-          .widget-profile.pro-widget-content.mx-5.px-5
-            .profile-info-widget
-              a.booking-doc-img(href='#')
-                img.m-2(src=`/img/users/${user.photo}` alt='User Image' style='border-radius: 50%; width: 100px; height: 100px;')
-            .profile-det-info
-              h4= user.username
-              
-          .dashboard-widget.px-5.float-start
-            nav.dashboard-menu.container
-              .row.justify-content-center                      
-                 
-                  a(href='#' style="text-decoration:none; height=:20px" class='btn btn-outline-primary m-2 h-75')
-                    i.fas.fa-lock
-                      span View bookings
-              
-                
-                  a(href='/api/v1/users/changepassword' style="text-decoration:none;" class='btn btn-outline-primary m-2 h-75')
-                    i.fas.fa-lock
-                      span Change Password
-              
-                
-                  a(href='/users/signout' style="text-decoration:none;" class='btn btn-outline-primary m-2 h-75')
-                    i.fas.fa-sign-out-alt
-                      span Logout
-      // /Profile Sidebar
-      .col-md-8
-        .card
-          .card-body
-            // Profile Settings Form
-            form(action='/api/v1/users/update-prifile' method='POST')
-              .row.form-row
-                .col-12.col-md-12.mb-4
-                  .form-group
-                    .change-avatar
-                      .profile-img.mb-3
-                        img(src=`/img/users/${user.photo}` alt='User Image' style='width: 100px; height:100px; border-radius:50%;')
-                      .upload-img.mb-2
-                        .change-photo-btn
-                          span
-                            i.fa.fa-upload
-                            |  Upload Photo
-                          input.upload(type='file' name="name")
-                        small.form-text.text-muted (Allowed JPG or PNG. Max size of 2MB)
-                .col-12.col-md-6
-                  .form-group.my-3
-                    label First Name
-                    input.form-control(type='text' name="fname" value=`${user.username.split(' ')[0]}`)
-                .col-12.col-md-6
-                  .form-group.my-3
-                    label Last Name
-                    input.form-control(type='text' name="lname" value=`${user.username.split(' ')[1]}`)
-                br
-                .col-12.col-md-6
-                  .form-group.my-3
-                    label E-mail
-                    input.form-control(type='email' name="email" value=`${user.email}`)
-                br
-                
-                .submit-section
-                  button.btn.btn-primary.submit-btn(type='submit') Save Changes
-                // /Profile Settings Form
+        .card 
+          .card-header.bg-secondary.text-white
+            | User profile 
+          .card-body.container-fluid
+            .row.mb-3.d-flex.justify-content-center
+              .col-md-6.mx-5.p-3
+                img.img-fluid(src=`/img/users/${user.photo}` alt='user photo' style='width:100px; height:100px; border-radius:50%')
+            .row.d-flex.justify-content-center
+              .col-md-10.mx-4
+                h5.card-title= user.username
+                p.card-text(style="font-size: 15px")= user.email
+                p.card-text(style="font-size: 15px; font-weight: 700") Date of Birth :
+                p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
+                a.btn.btn-primary(href='/api/v1/users/signout') Logout
+      .col-md-8.my-4
+        form(action="/api/v1/users/update-profile" method="POST" enctype="multipart/form-data")
+          legend.text-primary.text-center(style="font-weight: 900") Update Profile
+          .form-group 
+            label.my-2(for='photo') profile pic
+            .px-md-5
+              input(type='file', name="photo", id="photo")
+          .form-group
+            label.my-2(for='InputName') Full Name
+            .px-md-5 
+              input#InputName.form-control(type='text', name="username" aria-describedby='nameHelp', placeholder='Enter full name', value=`${user.username}`)
+          .form-group
+            label.my-2(for='InputEmail1') Email address
+            .px-md-5
+              input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email', value=`${user.email}`)
+          .form-group
+            label.my-2(for='date_of_birth') Date of Birth
+            .px-md-5
+              input#date_of_birth.form-control(type='date', name="dateOfBirth" aria-describedby='emailHelp', min='1900-01-01', max=`${new Date().getFullYear() - 18}-${new Date().getMonth()}-${new Date().getDate() - 1}`, placeholder='Enter date of birth', value=`${user.dateOfBirth.toISOString().split('T')[0]}`)
+          input.btn.btn-primary.btn-block.mt-3(type="submit", value="Update Profile")

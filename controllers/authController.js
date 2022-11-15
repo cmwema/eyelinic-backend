@@ -34,20 +34,16 @@ exports.postSignUp = catchAsync(async (req, res, next) => {
     "host"
   )}/api/v1/users/profile-settings`;
   new Email(newUser, url).sendWelcome();
-  passport.authenticate("local", {
-    failureRedirect: "/api/v1/users/login",
-    successRedirect: "/api/v1/users/dashboard",
-  });
+  res.redirect("/api/v1/users/login");
 });
 // log user
 exports.getLogIn = (req, res, next) => {
   res.render("login");
 };
 exports.postLogIn = (req, res) => {
-  console.log(req.body);
   passport.authenticate("local", {
     failureRedirect: "/api/v1/users/login",
-    successRedirect: "/",
+    successRedirect: "/api/v1/users/dashboard",
   });
 };
 

@@ -17,30 +17,26 @@ const multerFilter = (req, file, cb) => {
   }
 };
 
-const options = multer({
+const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
 
-exports.uploadUserPhoto = options.single("photo");
-// ==========================================
+exports.uploadUserPhoto = upload.single("photo");
 
-// ================user photo resizing=============
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
-  if (req.file.buffer) {
-    req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
-    await sharp(req.file.buffer)
-      .resize(500, 500)
-      .toFormat("jpeg")
-      .jpeg({ quality: 90 })
-      .toFile(`public/img/users/${req.file.filename}`);
-  }
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/users/${req.file.filename}`);
 
   next();
 });
-// =================================================
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -49,13 +45,12 @@ const filterObj = (obj, ...allowedFields) => {
   });
   return newObj;
 };
-
-exports.getMe = (req, res, next) => {
+exports.getProfileSettings = (req, res, next) => {
   res.render("profile-settings", { user: req.user });
 };
 exports.updateMe = catchAsync(async (req, res, next) => {
-  // console.log(req.file);
-  // console.log(req.body);
+  console.log(req.file);
+  console.log(req.body);
 
   // Check if user sends password data
   if (req.body.password || req.body.passwordConfirm) {
