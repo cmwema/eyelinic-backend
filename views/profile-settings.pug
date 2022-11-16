@@ -17,7 +17,7 @@ block content
                 p.card-text(style="font-size: 15px")= user.email
                 p.card-text(style="font-size: 15px; font-weight: 700") Date of Birth :
                 p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
-                a.btn.btn-primary(href='/api/v1/users/signout') Logout
+                a.btn.btn-danger(href='/api/v1/users/signout' style="text-decoration:none") Logout
       .col-md-8.my-4
         form(action="/api/v1/users/update-profile" method="POST" enctype="multipart/form-data")
           legend.text-primary.text-center(style="font-weight: 900") Update Profile

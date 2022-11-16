@@ -1,0 +1,44 @@
+extends base
+
+block content 
+    // contact us
+    section#contact.get-started
+    .container
+        .row.text-center
+        h1.display-3.fw-bold.text-capitalize Contact us today.
+        .heading-line
+        p.lh-lg
+            | Have any questions ,want to reach out to us? Contact us today at the comfort of your home.
+        // start of the contact us section
+        .row.text-dark
+        .col-12.col-lg-6.gradient.shadow.p-3
+            .cta-info.w-100
+            h4.display-4.fw-bold Reach us today.
+            p.lh-lg
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam alias optio minima, tempore architecto sint ipsam dolore tempora facere laboriosam corrupti!
+            h3.display-3--brief Why reach out?
+            br
+            ul.cta-info__list
+                li Get 24/7 assistance.
+                li Get instant replies to your queries.
+                li Get free counselling sessions today.
+        .col-12.col-lg-6.bg-white.shadow.p-3
+            .form.w-100.pb-2
+            h4.display-3--title.mb-5 Get in touch.
+            form.row(action='#' method='post')
+                .col-lg-6.col-md.mb-3
+                label(for='inputFirstName') First Name
+                input#inputFirstName.shadow.form-control.form-control-lg(type='text' placeholder='First Name')
+                .col-lg-6.col-md.mb-3
+                label(for='inputLastName') Last Name
+                input#inputLastName.shadow.form-control.form-control-lg(type='text' placeholder='Last Name')
+                .col-lg-12.mb-3
+                label(for='iinputEmail') E-mail address
+                input#inputEmail.shadow.form-control.form-control-lg(type='email' placeholder='E-mail address')
+                .col-lg-12.mb-3
+                label(for='message') Leave a message
+                textarea#message.shadow.form-control.form-control-lg(name='message' rows='8')
+                .text-center.d-grid.mt-1
+                button.btn.btn-warning.rounded-pill.pt-3.pb-3(type='button')
+                    | submit
+                    i.fas.fa-paper-plane

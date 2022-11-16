@@ -7,24 +7,8 @@ const router = express.Router();
 
 router.get("/", viewsController.getHome);
 
-router.get(
-  "/service/:slug",
-  authController.isLoggedIn,
-  viewsController.getService
-);
-router.get("/login", authController.isLoggedIn, viewsController.getLoginForm);
-router.get("/me", viewsController.getAccount);
-
-router.get(
-  "/my-services",
-  bookingController.createBookingCheckout,
-  viewsController.getMyServices
-);
-
-router.post(
-  "/submit-user-data",
-
-  viewsController.updateUserData
-);
+router.get("/contact", (req, res) => {
+  res.render("contact");
+});
 
 module.exports = router;

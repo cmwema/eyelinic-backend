@@ -49,9 +49,6 @@ exports.getProfileSettings = (req, res, next) => {
   res.render("profile-settings", { user: req.user });
 };
 exports.updateMe = catchAsync(async (req, res, next) => {
-  console.log(req.file);
-  console.log(req.body);
-
   // Check if user sends password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(

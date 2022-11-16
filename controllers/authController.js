@@ -40,7 +40,7 @@ exports.postSignUp = catchAsync(async (req, res, next) => {
 exports.getLogIn = (req, res, next) => {
   res.render("login");
 };
-exports.postLogIn = (req, res) => {
+exports.postLogIn = async (req, res) => {
   passport.authenticate("local", {
     failureRedirect: "/api/v1/users/login",
     successRedirect: "/api/v1/users/dashboard",

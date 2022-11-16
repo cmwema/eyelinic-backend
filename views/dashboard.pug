@@ -3,6 +3,78 @@ extends base
 
 block content 
     .container-fluid 
-        .row
-            h1 Welcome to your dashboard
-            
+        .row 
+            .col-md-4
+                .card 
+                    .card-header.text-primary
+                        h3 Dashboard 
+                    .card-body.container-fluid
+                        .row.mb-3.d-flex.justify-content-center
+                            .col-md-6.mx-5.p-3
+                                img.img-fluid(src=`/img/users/${user.photo}` alt='user photo' style='width:100px; height:100px; border-radius:50%')
+                        .row.d-flex.justify-content-center
+                            .col-md-10.mx-4
+                                h5.card-title= user.username
+                                p.card-text(style="font-size: 15px")= user.email
+                                p.card-text(style="font-size: 15px; font-weight: 700") Date of Birth :
+                                p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
+                                a.btn.btn-danger(href='/api/v1/users/signout' style="text-decoration: none;") Logout
+                    
+            .col-md-8 
+                .card
+                    .card-header.text-primary.text-center
+                        h3 Account summary
+                    .card-body.container-fluid
+                        .row
+                            .col-md-6 
+                                p.text-black Total Purchases : <span class="mx-2 text-success"> 9,870</span>
+                                    
+
+                            .col-md-6
+                                p.text-black Total Reviews Done : <span class="mx-2 text-success"> 4</span>
+
+                        hr.text-primary
+                        .row 
+                            .col-md-12
+                                .h4 Bookings
+                                hr
+                                table.m-3(style="width: 100%")
+                                    tr.p-2
+                                        td.mx-5.text-danger Service
+                                        td.mx-5.text-danger Date
+                                        td.mx-5.text-danger Optician
+                                        td.mx-5.text-danger Cost(KSH)
+
+                                    tr.p-2
+                                        td.mx-5 Color Blind test
+                                        td.mx-5= new Date().toDateString()
+                                        td.mx-5 Dr.Optician One
+                                        td.mx-5= 45 * 60
+
+                                    tr.p-2
+                                        td.mx-5 Color Blind test
+                                        td.mx-5= new Date().toDateString()
+                                        td.mx-5 Dr.Optician One
+                                        td.mx-5= 45 * 60
+
+                        hr.text-primary
+                        .row
+                            .col-md-12
+                                .h4 Reviews
+                                hr
+                                table.m-3(style="width: 100%")
+                                    tr.p-2
+                                        td.mx-5.text-danger Service
+                                        td.mx-5.text-danger Date
+                                        td.mx-5.text-danger Review
+                                        td.mx-5.text-danger Rating
+                                    tr.p-2
+                                        td.mx-5 Color Blind test
+                                        td.mx-5= new Date().toDateString()
+                                        td.mx-5 Dr.Optician One
+                                        td.mx-5= 45 * 60
+                                    tr.p-2
+                                        td.mx-5 Color Blind test
+                                        td.mx-5= new Date().toDateString()
+                                        td.mx-5 Dr.Optician One
+                                        td.mx-5= 45 * 60

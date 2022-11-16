@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const User = require("./../models/userModel");
+const Service = require("./../models/serviceModel");
+const Booking = require("./../models/bookingModel");
 
 // controllers
 const authController = require("./../controllers/authController");
@@ -27,8 +30,21 @@ router.post(
  */
 router.get("/signout", authController.isLoggedIn, authController.getLogout);
 
-router.get("/dashboard", authController.isLoggedIn, (req, res) => {
-  res.render("dashboard", { user: req.user });
+router.get("/dashboard", authController.isLoggedIn, async (req, res) => {
+  if (req.user.role === "admin") {
+    const usersList = await User.find({});
+    const services = await Service.find({});
+    const bookings = await Booking.find({});
+    console.log(bookings);
+    res.render("admin-dashboard", {
+      user: req.user,
+      usersList,
+      services,
+      bookings,
+    });
+  } else {
+    res.render("dashboard", { user: req.user });
+  }
 });
 
 router.get("/profile-settings", authController.isLoggedIn, (req, res) => {
@@ -57,11 +73,6 @@ router.delete("/delete-me", authController.isLoggedIn, userController.deleteMe);
 /**
  * ADMIN ROUTES
  */
-
-router
-  .route("/")
-  .get(userController.getAllUsers)
-  .post(userController.createUser);
 
 router
   .route("/:id")
