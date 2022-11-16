@@ -2,27 +2,6 @@ extends base
 
 block content
 
-  .container-sm-fluid.p-0.my-5.mx-4
-    .card.px-4.w-100
-      .card-header.bg-secondary.text-white.text-center.w-100
-        | Payment details
-      .card-body.row
-        form
-          .row
-            .form-group.col-md-6
-                label(for="person-name")  Person Name
-                input#person-name.form-control.mb-3(type='text' placeholder='Name' value='Barry Allen')
-            .form-group.col-md-6
-                label(for="card-number")  Card Number
-                input#card-number.form-control.mb-3(type='text' placeholder='1234 5678 435678')
-          .row
-            .form-group.col-md-6
-                label(for="expiry")  Expiry
-                input#expiry.form-control.mb-3(type='text' placeholder='MM/YYYY')
-            .form-group.col-md-6
-                label(for="cvv-cvc")  CVV/CVC
-                input#cvv-cvc.form-control.mb-3.pt-2(type='password' placeholder='***')
-          .col-12
-            .btn.btn-primary.mb-3
-              span.ps-3 Pay $243
-              span.fas.fa-arrow-right
+   h3 Welcome to Payment Gateway
+    form(action='payment' method='POST')
+      script.stripe-button(src='https://checkout.stripe.com/v2/checkout.js' data-key=`${key}` data-amount=`${amount}` data-currency='Ksh' data-name=`${productName}` data-description=`${description}` data-locale='auto')
