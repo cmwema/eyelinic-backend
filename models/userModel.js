@@ -47,13 +47,6 @@ const userSchema = new mongoose.Schema(
       default: Date.now(),
       select: true,
     },
-    bookings: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "Booking",
-      },
-    ],
-
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,

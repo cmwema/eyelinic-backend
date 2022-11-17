@@ -6,9 +6,7 @@ const reviewRouter = require("./reviewRoutes");
 
 router
   .route("/")
-  .get((req, res) => {
-    res.render("services");
-  })
+  .get(serviceController.getAllServices)
   .post(serviceController.createService);
 
 router.use("/:serviceId/reviews", reviewRouter);

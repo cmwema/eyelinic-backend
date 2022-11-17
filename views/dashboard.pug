@@ -20,61 +20,30 @@ block content
                                 p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
                                 a.btn.btn-danger(href='/api/v1/users/signout' style="text-decoration: none;") Logout
                     
-            .col-md-8 
-                .card
-                    .card-header.text-primary.text-center
-                        h3 Account summary
-                    .card-body.container-fluid
-                        .row
-                            .col-md-6 
-                                p.text-black Total Purchases : <span class="mx-2 text-success"> 9,870</span>
+            .col-md-7.border.border-black
+                .container-fluid(style="width=100%")                
+                    .row.mb-5#bookings
+                        table(style="width=100%")
+                            tr
+                                th(colspan="8").text-center.bg-secondary.p-2 Bookings
+                            tr(style="border-bottom: 3px solid grey;")
+                                th User
+                                th Booked At
+                        
+                                th Service
+                        
+                                th Price(Ksh)
+                                th Recipt   
+                            each booking in userBookings
+                                tr
+                                    td= booking.user.username
+                                        
+                                    td= booking.createdAt.toLocaleDateString()
+                                
+                                    td= booking.service.name
+                                
+                                    td= booking.price
+                                    td
+                                        a(href="#" style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-outline-success.px-3 download
                                     
-
-                            .col-md-6
-                                p.text-black Total Reviews Done : <span class="mx-2 text-success"> 4</span>
-
-                        hr.text-primary
-                        .row 
-                            .col-md-12
-                                .h4 Bookings
-                                hr
-                                table.m-3(style="width: 100%")
-                                    tr.p-2
-                                        td.mx-5.text-danger Service
-                                        td.mx-5.text-danger Date
-                                        td.mx-5.text-danger Optician
-                                        td.mx-5.text-danger Cost(KSH)
-
-                                    tr.p-2
-                                        td.mx-5 Color Blind test
-                                        td.mx-5= new Date().toDateString()
-                                        td.mx-5 Dr.Optician One
-                                        td.mx-5= 45 * 60
-
-                                    tr.p-2
-                                        td.mx-5 Color Blind test
-                                        td.mx-5= new Date().toDateString()
-                                        td.mx-5 Dr.Optician One
-                                        td.mx-5= 45 * 60
-
-                        hr.text-primary
-                        .row
-                            .col-md-12
-                                .h4 Reviews
-                                hr
-                                table.m-3(style="width: 100%")
-                                    tr.p-2
-                                        td.mx-5.text-danger Service
-                                        td.mx-5.text-danger Date
-                                        td.mx-5.text-danger Review
-                                        td.mx-5.text-danger Rating
-                                    tr.p-2
-                                        td.mx-5 Color Blind test
-                                        td.mx-5= new Date().toDateString()
-                                        td.mx-5 Dr.Optician One
-                                        td.mx-5= 45 * 60
-                                    tr.p-2
-                                        td.mx-5 Color Blind test
-                                        td.mx-5= new Date().toDateString()
-                                        td.mx-5 Dr.Optician One
-                                        td.mx-5= 45 * 60
+                    .btn.btn-outline-success Full statement

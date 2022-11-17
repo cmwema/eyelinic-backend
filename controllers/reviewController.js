@@ -7,6 +7,7 @@ exports.createServiceUserIds = (req, res, next) => {
   // get the service id from the url
   if (!req.body.service) req.body.service = req.params.serviceId;
   //gee the user id from the current user
+  // console.log(req.user);
   if (!req.body.user) req.body.user = req.user.id;
 
   next();
