@@ -73,14 +73,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 // deleting the current user account
-exports.deleteMe = catchAsync(async (req, res, next) => {
-  // console.log(req.user.id);
-  await User.findByIdAndUpdate(req.user.id, { active: false });
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  // console.log(req.user.id)
+  await User.findByIdAndUpdate(req.params.id, { active: false });
 
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
+  res.redirect("/api/v1/users/dashboard");
 });
 
 exports.getUserStats = catchAsync(async (req, res) => {
@@ -116,5 +113,3 @@ exports.createUser = handlerFactory.createOne(User);
 exports.getUser = handlerFactory.getOne(User);
 
 exports.updateUser = handlerFactory.updateOne(User);
-
-exports.deleteUser = handlerFactory.deleteOne(User);

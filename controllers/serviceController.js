@@ -19,12 +19,12 @@ const options = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadServiceImages = options.single("coverImage");
+exports.uploadServiceImage = options.single("coverImage");
 
 exports.resizServiceCoverImage = async (req, res, next) => {
   if (!req.file) return next();
 
-  req.file.filename = `service-${req.params.id}-${Date.now()}.jpeg`;
+  req.file.filename = `service-${Date.now()}.jpeg`;
   await sharp(req.file.buffer)
     .resize(2000, 1333)
     .toFormat("jpeg")

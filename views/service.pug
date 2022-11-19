@@ -1,0 +1,36 @@
+extends base
+
+block content
+    .container-sm-fluid.mx-4.mb-5
+        .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
+            .card-header.bg-secondary.text-white.text-center
+                h4 Create a New Service
+            .card-body.p-md-5
+                form(action=`/api/v1/services/` method='POST' enctype="multipart/form-data")
+                    .form-group
+                    
+                        .my-2(for='InputName') Service Name
+                        .px-md-5 
+                            input#InputName.form-control(required type='text' name="name" aria-describedby='nameHelp' placeholder='Enter service name')
+                    .form-group 
+                        .my-2(for="price") Price 
+                        .px-md-5
+                            input#price(required type="number" name="price" min="0" max="100000" placeholder="2500")
+                    .form-group 
+                        .my-2(for="image") Cover Image
+                        .px-md-5 
+                            input#image(required type="file" name="coverImage")
+
+                    .form-group 
+                        .my-2(for="opticians") Opticians 
+                        .px-md-5 
+                            select#role(name="opticians")
+                                each optician in opticians
+                                    option.m-2.text-primary(value=`${optician._id}`)= optician.username 
+                    .form-group 
+                        .my-2(for="description") Service Description
+                        .px-md-5
+                            input#description(required type="text" name="description" placeholder="Description")
+                    input.btn.btn-primary.btn-block.mt-3(type="submit" value="Create service")
+
+            

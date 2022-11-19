@@ -4,19 +4,14 @@ const APIFeatures = require("./../utils/apiFeatures");
 
 // delete single document factory function
 exports.deleteOne = (Model) =>
-  catchAsync(async (req, res) => {
+  catchAsync(async (req, res, next) => {
+    console.log("deleting....");
     document = await Model.findByIdAndDelete(req.params.id);
 
     if (!document) {
       throw new AppError("No document found with that ID");
     }
-
-    res.status(204).json({
-      status: "success",
-      data: {
-        document,
-      },
-    });
+    next();
   });
 
 exports.updateOne = (Model) =>
@@ -30,24 +25,14 @@ exports.updateOne = (Model) =>
       throw new AppError("No document found with that ID", 404);
     }
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        doc,
-      },
-    });
+    res.redirect("/api/v1/users/dashboard");
   });
 
 exports.createOne = (Model) =>
   catchAsync(async (req, res) => {
+    console.log(req.body);
     const newDoc = await Model.create(req.body);
-    // console.log(newDoc);
-    res.status(201).json({
-      status: "success",
-      data: {
-        newDoc,
-      },
-    });
+    res.redirect("/api/v1/users/dashboard");
   });
 
 exports.getAll = (Model) =>

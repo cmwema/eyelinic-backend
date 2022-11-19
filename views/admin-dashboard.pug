@@ -38,16 +38,16 @@ block content
                             each user in usersList
                                 tr
                                     td
-                                        img(src=`/img/users/${user.photo}` alt=`Photo of user` style='width: 25px; height: 25px; border-radius: 50%;')
+                                        img(src=`/img/users/${user.photo}` alt=`Photo of user`  style='width: 25px; height: 25px; border-radius: 50%;')
                                     td= user.username
                                     td= user.email
                                     td= user.age
                                     td= user.createdAt.toLocaleDateString()
                                     td= user.role
                                     td
-                                        a(href="#" style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                        a(href=`/api/v1/users/${user._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
                                     td 
-                                        a(href="#" style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
+                                        a(href=`/api/v1/users/${user._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
 
         hr
         //- services
@@ -77,11 +77,10 @@ block content
                                 
                                     td= service.ratingAverage
                                     td
-                                        a(href="#" style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                        a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
                                     td 
-                                        a(href="#" style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
-                    a(href="#" ).btn.btn-outline-success.mb-2 new service
-              
+                                        a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
+                    a(href="/api/v1/services" ).btn.btn-outline-success.mb-2 new service
             .col-md-7.border.border-black
                 .container-fluid(style="width=100%")                
                     .row.mb-5#bookings

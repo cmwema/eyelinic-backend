@@ -3,4 +3,27 @@ extends base
 block content 
     .container-fluid
         .row 
-            .
+            .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
+                .card-header.bg-secondary.text-white.text-center
+                    h4 Edit User Account
+                .card-body.p-md-5
+                    form(action=`/api/v1/users/${userToEdit[0]._id}/update` method='POST')
+                        .form-group
+                        .my-2(for='InputName') Full Name
+                        .px-md-5 
+                            input#InputName.form-control(type='text', name="username" aria-describedby='nameHelp', placeholder='Enter full name' value=`${userToEdit[0].username}`)
+                            
+                        .form-group
+                        .my-2(for='InputEmail1') Email address
+                        .px-md-5
+                            input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email' value=`${userToEdit[0].email}`)
+                        
+                        .form-group
+                            .my-2(for="role") Select the new user role :  
+                            .px-md-5
+                                select#role(name="role")
+                                    option.m-2.text-primary(value="optician") optician 
+                                    option.m-2.text-primary(value="client") client 
+                                    option.m-2.text-primary(value="admin") admin 
+
+                        input.btn.btn-primary.btn-block.mt-3(type="submit", value="Update")
