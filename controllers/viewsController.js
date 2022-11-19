@@ -50,7 +50,7 @@ exports.getMyServices = catchAsync(async (req, res, next) => {
   const serviceID = bookings.map((el) => el.service);
   const services = await Service.find({ _id: { $in: serviceID } });
 
-  res.status(200).render("overview", {
+  res.status(200).render("services", {
     title: "My services",
     services,
   });
