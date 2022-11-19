@@ -4,6 +4,7 @@ const passport = require("passport");
 const User = require("./../models/userModel");
 const Service = require("./../models/serviceModel");
 const Booking = require("./../models/bookingModel");
+const Review = require("./../models/reviewModel");
 
 // controllers
 const authController = require("./../controllers/authController");
@@ -31,24 +32,42 @@ router.post(
 router.get("/signout", authController.isLoggedIn, authController.getLogout);
 
 router.get("/dashboard", authController.isLoggedIn, async (req, res) => {
+  const usersList = await User.find({});
+  const services = await Service.find({});
+  const bookings = await Booking.find({});
+  const reviews = await Review.find({});
   if (req.user.role === "admin") {
-    const usersList = await User.find({});
-    const services = await Service.find({});
-    const bookings = await Booking.find({});
-    console.log(bookings);
+    var sales = 0;
+    for (const booking of bookings) {
+      sales += Number(booking.price);
+    }
+    console.log(sales);
     res.render("admin-dashboard", {
       user: req.user,
       usersList,
       services,
       bookings,
+      sales,
     });
   } else {
-    res.render("dashboard", { user: req.user });
+    var userReviews = [];
+    var userBookings = [];
+    for (const review of reviews) {
+      if (review.user == req.user) {
+        userReviews.push(review);
+      }
+    }
+    for (const booking of bookings) {
+      if (booking.user.username == req.user.username) {
+        userBookings.push(booking);
+      }
+    }
+    res.render("dashboard", { user: req.user, services, userBookings });
   }
 });
 
 router.get("/profile-settings", authController.isLoggedIn, (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   const user = req.user;
   res.render("profile-settings", { user: user });
 });

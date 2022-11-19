@@ -33,7 +33,7 @@ exports.postSignUp = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get(
     "host"
   )}/api/v1/users/profile-settings`;
-  new Email(newUser, url).sendWelcome();
+  // new Email(newUser, url).sendWelcome();
   res.redirect("/api/v1/users/login");
 });
 // log user
