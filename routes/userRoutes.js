@@ -41,7 +41,7 @@ router.get("/dashboard", authController.isLoggedIn, async (req, res) => {
     for (const booking of bookings) {
       sales += Number(booking.price);
     }
-    console.log(sales);
+
     res.render("admin-dashboard", {
       user: req.user,
       usersList,
@@ -87,16 +87,33 @@ router
 
 router.route("/resetPassword").get().post();
 
-router.delete("/delete-me", authController.isLoggedIn, userController.deleteMe);
+router.delete(
+  "/delete-me",
+  authController.isLoggedIn,
+  userController.deleteUser
+);
 
 /**
  * ADMIN ROUTES
  */
 
-router
-  .route("/:id")
-  .get(userController.getUser)
-  .patch(userController.updateUser)
-  .delete(userController.deleteUser);
+router.get("/:id", authController.isLoggedIn, async (req, res) => {
+  const userToEdit = await User.find({ _id: req.params.id });
+  res.render("edit_user", { user: req.user, userToEdit });
+});
 
+router.post(
+  "/:id/update",
+  authController.isLoggedIn,
+  userController.updateUser
+);
+
+router
+  .route("/:id/del")
+  .get(authController.isLoggedIn, async (req, res) => {
+    const userToDel = await User.find({ _id: req.params.id });
+    const url = `/api/v1/users/${userToDel[0]._id}/del`;
+    res.render("confirm-del", { user: req.user, userToDel, url });
+  })
+  .post(authController.isLoggedIn, userController.deleteUser);
 module.exports = router;

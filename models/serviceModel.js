@@ -30,24 +30,13 @@ const serviceSchema = new mongoose.Schema(
       required: [true, "service must have a price"],
       min: 0,
     },
-    priceDiscount: {
-      type: Number,
-      validate: function (val) {
-        return val < this.price;
-      },
-      min: 0,
-      default: 0,
-    },
+
     description: {
       type: String,
-      // required: true,
+      required: true,
       trim: true,
     },
-    summary: {
-      type: String,
-      // required: true,
-      trim: true,
-    },
+
     coverImage: {
       type: String,
     },

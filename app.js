@@ -75,13 +75,7 @@ app.use(xssClean());
 // preventing parameter pollution
 app.use(
   hpp({
-    whitelist: [
-      "name",
-      "ratingAverage",
-      "price",
-      "ratingQuantity",
-      "priceDiscount",
-    ],
+    whitelist: ["name", "ratingAverage", "price", "ratingQuantity"],
   })
 );
 // compress responses(html/ json)
