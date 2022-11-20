@@ -1,0 +1,19 @@
+extends base
+
+block content
+    .container-fluid 
+        .row 
+            each service in services
+                .card.m-2(style="width: 18rem;")
+                    img.img-fluid(src=`/img/services/${service.coverImage}` class="card-img-top" alt=`${service.name} cover image` style="width: 110%;")
+                    .card-body
+                        h4.card-title.bg-light.text-primary.p-3(style="font-weight: 900; z-index: 100; margin-top: -50px")= service.name
+                        .card-text= service.description
+                        .row 
+                            .col-6.text-primary(style="font-size: 15px") Price :
+                            p.col-6(style="font-size: 15px")= service.price
+                            .col-6.text-primary(style="font-size: 15px") Rating :  
+                            p.col-6(style="font-size: 15px")= service.ratingAverage
+                            .col-6.text-primary(style="font-size: 15px") Reviews :
+                            p.col-6(style="font-size: 15px")= service.ratingQuantity
+                            a.col-6(href=`/api/v1/bookings/${service._id}` class="btn btn-outline-primary " sytle="text-decoration: none;") Book

@@ -10,6 +10,7 @@ const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
+    coverImage;
     cb(new AppError("Not an image! Please upload only images.", 400), false);
   }
 };
@@ -24,7 +25,8 @@ exports.uploadServiceImage = options.single("coverImage");
 exports.resizServiceCoverImage = async (req, res, next) => {
   if (!req.file) return next();
 
-  req.file.filename = `service-${Date.now()}.jpeg`;
+  req.file.filename = `${req.body.name}-${Date.now()}.jpeg`;
+  req.body.coverImage = req.file.filename;
   await sharp(req.file.buffer)
     .resize(2000, 1333)
     .toFormat("jpeg")
