@@ -33,8 +33,13 @@ exports.postSignUp = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get(
     "host"
   )}/api/v1/users/profile-settings`;
+
   // new Email(newUser, url).sendWelcome();
-  res.redirect("/api/v1/users/login");
+
+  passport.authenticate("local", {
+    failureRedirect: "/api/v1/users/login",
+    successRedirect: "/api/v1/users/dashboard",
+  });
 });
 // log user
 exports.getLogIn = (req, res, next) => {
