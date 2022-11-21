@@ -30,7 +30,7 @@ exports.updateOne = (Model) =>
 
 exports.createOne = (Model) =>
   catchAsync(async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const newDoc = await Model.create(req.body);
     res.redirect("/api/v1/users/dashboard");
   });

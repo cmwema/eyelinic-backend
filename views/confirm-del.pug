@@ -8,6 +8,5 @@ block content
                     h4 Confirm Deletion
                 .card-body.p-md-5
                     form(action=`${url}` method='POST')
-                        p= url
                         a.btn.btn-outline-primary.btn-block.mt-3.mx-2(href="/api/v1/users/dashboard") Cancel
                         input.btn.btn-danger.btn-block.mt-3.mx-2(type="submit", value="Delete")

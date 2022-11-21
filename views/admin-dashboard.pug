@@ -94,7 +94,9 @@ block content
                                 th Service
                         
                                 th Price(Ksh)
-  
+
+                                th Date 
+                                th Time
                             each booking in bookings
                                 tr
                                     td= booking.user.username
@@ -104,5 +106,6 @@ block content
                                     td= booking.service.name
                                 
                                     td= booking.price
-                                    
-                
+
+                                    td= booking.appointment.toLocaleDateString('tr-Tr', {year: 'numeric',month: '2-digit',day: '2-digit'})
+                                    td= booking.appointment.toLocaleTimeString()

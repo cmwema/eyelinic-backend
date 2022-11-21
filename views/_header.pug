@@ -12,10 +12,14 @@
           li 
             a(href="/api/v1/users/dashboard#services" class="nav-link px-2 link-link " style="text-decoration: none;") Services
 
-        li
-          a(href="/api/v1/users/dashboard#bookings" class="nav-link px-2 link-link " style="text-decoration: none;") Bookings
-        li
-          a(href="#" class="nav-link px-2 link-link " style="text-decoration: none;") help
+          li
+            a(href="/api/v1/users/dashboard#bookings" class="nav-link px-2 link-link " style="text-decoration: none;") Bookings
+        else
+          li 
+            a(href="/api/v1/bookings" class="nav-link px-2 link-link " style="text-decoration: none;") Bookings
+          li
+            a(href="#" class="nav-link px-2 link-link " style="text-decoration: none;") help
+
       div(class="col-md-3 text-end")
         a(href="/api/v1/users/signout" class="btn btn-outline-danger text-light me-2 btn--custom" style="text-decoration: none;") Log out
         
