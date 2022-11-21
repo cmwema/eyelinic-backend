@@ -9,11 +9,13 @@ block content
                 .card-body.p-md-5
                     form(action=`/api/v1/bookings/${service._id}` method='POST')
                         .form-group
+                            input.form-control(type='text' name='phone' value="0790028824" hidden)
+                        .form-group
                             .px-md-5 
                                 input#InputName.form-control(required type='text' name="service" aria-describedby='nameHelp' value=`${service._id}` hidden)
                         .form-group 
                             .px-md-5
-                                input#price(required type="number" name="price" min="0" max="100000" value=`${service.price}` hidden)
+                                input#price(required type="number" name="amount" min="0" max="100000" value=`${service.price}` hidden)
                         .form-group 
                             .px-md-5
                                 input#price(required type="text" name="user" min="0" max="100000" value=`${user._id}` hidden)
