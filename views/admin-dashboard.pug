@@ -24,8 +24,8 @@ block content
                 .container-fluid(style="width=100%")
                     .row.mb-5#users
                         table(style="width=100%")
-                            tr
-                                th(colspan="8").text-center.bg-secondary.p-2 Users
+                            tr(style="border-bottom: 3px solid grey;")
+                                th(colspan="8").text-center.bg-light.p-2.text-primary.my-2 Users
                             tr(style="border-bottom: 3px solid grey;")
                                 th photo
                                 th username
@@ -36,18 +36,32 @@ block content
                                 th edit 
                                 th delete   
                             each user in usersList
-                                tr
-                                    td
-                                        img(src=`/img/users/${user.photo}` alt=`Photo of user`  style='width: 25px; height: 25px; border-radius: 50%;')
-                                    td= user.username
-                                    td= user.email
-                                    td= user.age
-                                    td= user.createdAt.toLocaleDateString()
-                                    td= user.role
-                                    td
-                                        a(href=`/api/v1/users/${user._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
-                                    td 
-                                        a(href=`/api/v1/users/${user._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
+                                if((usersList.indexOf(user) % 2 ) == 1)    
+                                    tr.bg-secondary.text-light
+                                        td
+                                            img(src=`/img/users/${user.photo}` alt=`Photo of user`  style='width: 25px; height: 25px; border-radius: 50%;')
+                                        td= user.username
+                                        td= user.email
+                                        td= user.age
+                                        td= user.createdAt.toLocaleDateString()
+                                        td= user.role
+                                        td
+                                            a(href=`/api/v1/users/${user._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                        td 
+                                            a(href=`/api/v1/users/${user._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
+                                else
+                                    tr.bg-light.text-black
+                                        td
+                                            img(src=`/img/users/${user.photo}` alt=`Photo of user`  style='width: 25px; height: 25px; border-radius: 50%;')
+                                        td= user.username
+                                        td= user.email
+                                        td= user.age
+                                        td= user.createdAt.toLocaleDateString()
+                                        td= user.role
+                                        td
+                                            a(href=`/api/v1/users/${user._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                        td 
+                                            a(href=`/api/v1/users/${user._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
 
         hr
 
@@ -57,8 +71,8 @@ block content
                 .container-fluid(style="width=100%")                
                     .row.mb-5#bookings
                         table(style="width=100%")
-                            tr
-                                th(colspan="8").text-center.bg-secondary.p-2 Bookings
+                            tr(style="border-bottom: 3px solid grey;")
+                                th(colspan="8").text-center.bg-light.p-2.text-primary.my-2 Bookings
                             tr(style="border-bottom: 3px solid grey;")
                                 th User
                                 th Booked At
@@ -70,61 +84,97 @@ block content
                                 th Date 
                                 th Time
                             each booking in bookings
-                                tr
-                                    td= booking.user.username
-                                        
-                                    td= booking.createdAt.toLocaleDateString()
-                                
-                                    td= booking.service.name
-                                
-                                    td= booking.price
+                                if((bookings.indexOf(booking) % 2) == 1)
+                                    tr.bg-secondary.text-light
+                                        td= booking.user.username
+                                            
+                                        td= booking.createdAt.toLocaleDateString()
+                                    
+                                        td= booking.service.name
+                                    
+                                        td= booking.price
 
-                                    td= booking.appointment.toLocaleDateString('tr-Tr', {year: 'numeric',month: '2-digit',day: '2-digit'})
-                                    td= booking.appointment.toLocaleTimeString()
+                                        td= booking.appointment.toLocaleDateString('en-US', {year: 'numeric',month: '2-digit',day: '2-digit'})
+                                        td= booking.appointment.toLocaleTimeString()
+                                else
+                                    tr
+                                        td= booking.user.username
+                                            
+                                        td= booking.createdAt.toLocaleDateString()
+                                    
+                                        td= booking.service.name
+                                    
+                                        td= booking.price
+
+                                        td= booking.appointment.toLocaleDateString('en-US', {year: 'numeric',month: '2-digit',day: '2-digit'})
+                                        td= booking.appointment.toLocaleTimeString()
 
         hr
         .row 
-            .col-md-6.border.border-black.bg-light.p-3
+            .col-md-6.border.border-black.bg-light.p-3(style="border-right: 5px solid grey ")
                 .container-fluid(style="width=100%")                
                     .row.mb-5#services
                         table(style="width=100%")
-                            tr
-                                th(colspan="8").text-center.bg-secondary.p-2 Services
+                            tr(style="border-bottom: 3px solid grey;")
+                                th(colspan="8").text-center.bg-light.p-2.text-primary.my-2 Services
                             tr(style="border-bottom: 3px solid grey;")
                                 th Name
                                 th Price(Ksh)
                                 th edit 
                                 th delete   
                             each service in services
-                                tr
-                                    td= service.name
-                                        
-                                    td= service.price
-                                
-                                    td
-                                        a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
-                                    td 
-                                        a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
+                                if((services.indexOf(service) % 2) == 1)
+                                    tr.bg-secondary.text-light
+                                        td= service.name
+                                            
+                                        td= service.price
+                                    
+                                        td
+                                            a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                        td 
+                                            a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
+                                else
+                                    tr
+                                        td= service.name
+                                            
+                                        td= service.price
+                                    
+                                        td
+                                            a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                        td 
+                                            a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
                     a(href="/api/v1/services" ).btn.btn-outline-success.mb-2 new service
+
             .col-md-6.border.border-black.bg-light.p-3
                 .container-fluid(style="width=100%")                
                     .row.mb-5#services
                         table(style="width=100%")
-                            tr
-                                th(colspan="8").text-center.bg-secondary.p-2 Payments
                             tr(style="border-bottom: 3px solid grey;")
-                                th Name
-                                th Price(Ksh)
-                                th edit 
-                                th delete   
-                            each service in services
-                                tr
-                                    td= service.name
+                                th(colspan="8").text-center.bg-light.p-2.text-primary.my-2 Payments
+                            tr(style="border-bottom: 3px solid grey;")
+                                th Mpesa Receipt No.
+                                th Amount(Ksh)
+                                th Date 
+                                th Time
+                                th Phone   
+                            each payment in payments
+                                if(payments.length>0)
+                                    - const date = new String(payment.TransactionDate)
+                                    - const time = date.slice(8, 10) + ":" + date.slice(10, 12) + ":" + date.slice(12, 14)
+                                    if((payments.indexOf(payment) % 2) == 1)
+                                        tr.bg-secondary.text-light
+                                            td= payment.MpesaReceiptNumber
+                                            td= payment.Amount
+                                            td= date.slice(0, 4) + '-' + date.slice(4, 6) + '-' + date.slice(6, 8)
+                                            td= time
+                                            td= payment.PhoneNumber
+                                    else
+                                        tr
+                                            td= payment.MpesaReceiptNumber
+                                            td= payment.Amount
+                                            td= date.slice(0, 4) + '-' + date.slice(4, 6) + '-' + date.slice(6, 8)
+                                            td= time
+                                            td= payment.PhoneNumber
                                         
-                                    td= service.price
-                                
-                                    td
-                                        a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
-                                    td 
-                                        a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
-                    a(href="/api/v1/services" ).btn.btn-outline-success.mb-2 new service
+                                        
+                    
