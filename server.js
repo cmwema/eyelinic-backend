@@ -4,17 +4,8 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const app = require("./app");
 
-process.on("uncaughtException", (err) => {
-  console.log(err.name, err.message);
-  console.log("UnhandledException:    shutting down.....");
-
-  server.close(() => {
-    process.exit(1);
-  });
-});
-
 mongoose
-  .connect(process.env.DATABASE_CLOUD, {
+  .connect(process.env.DATABASE_LOCAL, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -31,8 +22,11 @@ const server = app.listen(PORT, () => {
 });
 
 process.on("unhandledRejection", (err) => {
+  console.error("unhandledRejection", err);
+});
+process.on("uncaughtException", (err) => {
   console.log(err.name, err.message);
-  console.log("UnhandledRejection:    shutting down.....");
+  console.log("UnhandledException:    shutting down.....");
 
   server.close(() => {
     process.exit(1);

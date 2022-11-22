@@ -7,6 +7,9 @@ const router = express.Router();
 
 router.get("/", viewsController.getHome);
 
+router.get("/about", (req, res) => {
+  res.render("about");
+});
 router.get("/contact", (req, res) => {
   res.render("contact");
 });

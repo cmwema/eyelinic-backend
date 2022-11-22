@@ -13,10 +13,7 @@ exports.getAbout = (req, res) => {
 };
 exports.getService = catchAsync(async (req, res, next) => {
   // 1) Get the data, for the requested tour (including reviews and guides)
-  const service = await Service.findOne({ slug: req.params.slug }).populate({
-    path: "reviews",
-    fields: "review rating user",
-  });
+  const service = await Service.findOne({ slug: req.params.slug });
 
   if (!service) {
     return next(new AppError("There is no service with that name.", 404));

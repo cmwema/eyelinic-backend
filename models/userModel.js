@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema(
       maxlength: [30, "user name cannot be more than 30 characters long"],
       trim: true,
     },
+    phone: {
+      type: String,
+      match: /^((\+)254|0)[1-9](\d{2}){4}$/,
+      required: [true, "a user must have a phone number"],
+    },
 
     photo: {
       type: String,

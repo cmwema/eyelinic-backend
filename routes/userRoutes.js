@@ -4,7 +4,7 @@ const passport = require("passport");
 const User = require("./../models/userModel");
 const Service = require("./../models/serviceModel");
 const Booking = require("./../models/bookingModel");
-const Review = require("./../models/reviewModel");
+const Pay = require("./../models/payModel");
 
 // controllers
 const authController = require("./../controllers/authController");
@@ -35,7 +35,8 @@ router.get("/dashboard", authController.isLoggedIn, async (req, res) => {
   const usersList = await User.find({});
   const services = await Service.find({});
   const bookings = await Booking.find({});
-  const reviews = await Review.find({});
+  const payments = await Pay.find({});
+
   if (req.user.role === "admin") {
     var sales = 0;
     for (const booking of bookings) {
@@ -48,18 +49,16 @@ router.get("/dashboard", authController.isLoggedIn, async (req, res) => {
       services,
       bookings,
       sales,
+      payments,
     });
   } else {
-    var userReviews = [];
     var userBookings = [];
-    for (const review of reviews) {
-      if (review.user == req.user) {
-        userReviews.push(review);
-      }
-    }
-    for (const booking of bookings) {
-      if (booking.user.username == req.user.username) {
-        userBookings.push(booking);
+
+    if (bookings.length > 0) {
+      for (const booking of bookings) {
+        if (booking.user.username == req.user.username) {
+          userBookings.push(booking);
+        }
       }
     }
     res.render("dashboard", { user: req.user, services, userBookings });

@@ -5,7 +5,6 @@ const Service = require("../models/serviceModel");
 
 const serviceController = require("./../controllers/serviceController");
 const authController = require("./../controllers/authController");
-const reviewRouter = require("./reviewRoutes");
 
 router
   .route("/")
@@ -22,8 +21,6 @@ router
     serviceController.resizServiceCoverImage,
     serviceController.createService
   );
-
-router.use("/:serviceId/reviews", reviewRouter);
 
 // router.route("/:id").get(serviceController.getService);
 
