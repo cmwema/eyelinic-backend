@@ -14,22 +14,14 @@ main {
   max-height: max-content;
   background-image: linear-gradient(
       to right,
-      rgba(245, 245, 245, 0.658),
-      rgba(252, 252, 252, 0.671)
+      rgba(241, 241, 241, 0.349),
+      rgba(122, 122, 122, 0.301)
     ),
     url("/img/harpreet-singh-XbPhaw-x0i0-unsplash.jpg");
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
 }
-/* how to center div
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
 .intro-section {
   margin: 10px;
   padding: 10px;

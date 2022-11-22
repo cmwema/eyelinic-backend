@@ -12,4 +12,7 @@ block content
                         .row 
                             .col-6.text-primary(style="font-size: 15px") Price :
                             p.col-6(style="font-size: 15px")= service.price
-                            a.col-6(href=`/api/v1/bookings/${service._id}` class="btn btn-outline-primary " sytle="text-decoration: none;") Book
+                            a.col-6.m-2(href=`/api/v1/bookings/${service._id}`  class="btn btn-success " sytle="text-decoration: none;") Pay 
+                            a.col-6.m-2(href=`/api/v1/bookings/${service._id}/book`  class="btn btn-outline-primary " sytle="text-decoration: none;") Book Now
+
+                            

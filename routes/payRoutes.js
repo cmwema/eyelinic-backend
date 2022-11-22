@@ -11,27 +11,34 @@ const router = express.Router();
 router.post("/stk", tokenMiddleware, postStkController);
 
 router.post("/callback", async (req, res) => {
-  const CallBackData = req.body;
+  try {
+    const CallBackData = req.body;
+    // console.log(CallBackData);
 
-  if (!CallBackData.Body.stkCallback.CallbackMetadata) {
-    console.log("No metadata");
-  } else {
-    console.log(CallBackData.Body.stkCallback.CallbackMetadata.Item[0].Value);
-    const Amount = CallBackData.Body.stkCallback.CallbackMetadata.Item[0].Value;
-    const MpesaReceiptNumber =
-      CallBackData.Body.stkCallback.CallbackMetadata.Item[1].Value;
-    const TransactionDate =
-      CallBackData.Body.stkCallback.CallbackMetadata.Item[2].Value;
-    const PhoneNumber =
-      CallBackData.Body.stkCallback.CallbackMetadata.Item[3].Value;
+    if (!CallBackData.Body.stkCallback.CallbackMetadata) {
+      console.log("No metadata");
+      // return res.redirect("/api/v1/users/dashboard");
+    } else {
+      console.log(CallBackData.Body.stkCallback.CallbackMetadata);
+      const Amount =
+        CallBackData.Body.stkCallback.CallbackMetadata.Item[0].Value;
+      const MpesaReceiptNumber =
+        CallBackData.Body.stkCallback.CallbackMetadata.Item[1].Value;
+      const TransactionDate =
+        CallBackData.Body.stkCallback.CallbackMetadata.Item[2].Value;
+      const PhoneNumber =
+        CallBackData.Body.stkCallback.CallbackMetadata.Item[3].Value;
 
-    await Pay.create({
-      Amount,
-      MpesaReceiptNumber,
-      TransactionDate,
-      PhoneNumber,
-    });
-    res.json("ok");
+      await Pay.create({
+        Amount,
+        MpesaReceiptNumber,
+        TransactionDate,
+        PhoneNumber,
+      });
+      res.json("ok");
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 

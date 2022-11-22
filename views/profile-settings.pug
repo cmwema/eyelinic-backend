@@ -22,9 +22,14 @@ block content
               .px-md-5
                 input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email', value=`${user.email}`)
             .form-group.col-md-6
+              label.my-2(for='phone') Phone
+              .px-md-5
+                input#phone.form-control(type="tel", name="phone" placeholder="Enter phone number" value=`${user.phone}`)
+          .row
+            .form-group.col-md-6
               label.my-2(for='date_of_birth') Date of Birth
               .px-md-5
                 input#date_of_birth.form-control(type='date', name="dateOfBirth" aria-describedby='emailHelp', min='1900-01-01', max=`${new Date().getFullYear() - 18}-${new Date().getMonth()}-${new Date().getDate() - 1}`, placeholder='Enter date of birth', value=`${user.dateOfBirth.toISOString().split('T')[0]}`)
-          .row
+          
             .form-group.col-md-6
               input.btn.btn-primary.btn-block.my-5(type="submit", value="Update Profile")

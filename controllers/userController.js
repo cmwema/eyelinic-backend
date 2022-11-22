@@ -60,7 +60,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
 
   // filter out unwanted fields names
-  const filteredBody = filterObj(req.body, "username", "email");
+  const filteredBody = filterObj(req.body, "username", "email", "phone");
   if (req.file) filteredBody.photo = req.file.filename;
 
   // Update user

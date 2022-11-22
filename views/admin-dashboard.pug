@@ -1,12 +1,12 @@
 extends base
 
 block content 
-    .container-fluid.mb-5
-        h3.text-center.text-primary.m-2.bg-light Admin Dashboard
+    .container-fluid.mb-2
+        h3.text-center.text-primary.p-2 Admin Dashboard
         hr.text-secondary(style="font-weight: 900")
-        .row.m-4.bg-light.p-3
+        .row.bg-light.p-5.text-black
             table(style="width:100%; padding: 10px")
-                tr 
+                tr
                     th.text-center Users
                     th.text-center Services
                     th.text-center Bookings
@@ -75,13 +75,12 @@ block content
                                 th(colspan="8").text-center.bg-light.p-2.text-primary.my-2 Bookings
                             tr(style="border-bottom: 3px solid grey;")
                                 th User
-                                th Booked At
-                        
+                                th Booked On
                                 th Service
-                        
                                 th Price(Ksh)
-
-                                th Date 
+                                th Receipt No.
+                                th Phone
+                                th Appointment Date 
                                 th Time
                             each booking in bookings
                                 if((bookings.indexOf(booking) % 2) == 1)
@@ -93,7 +92,8 @@ block content
                                         td= booking.service.name
                                     
                                         td= booking.price
-
+                                        td= booking.MpesaReceiptNumber
+                                        td= booking.PhoneNumber
                                         td= booking.appointment.toLocaleDateString('en-US', {year: 'numeric',month: '2-digit',day: '2-digit'})
                                         td= booking.appointment.toLocaleTimeString()
                                 else
@@ -105,7 +105,8 @@ block content
                                         td= booking.service.name
                                     
                                         td= booking.price
-
+                                        td= booking.MpesaReceiptNumber
+                                        td= booking.PhoneNumber
                                         td= booking.appointment.toLocaleDateString('en-US', {year: 'numeric',month: '2-digit',day: '2-digit'})
                                         td= booking.appointment.toLocaleTimeString()
 
