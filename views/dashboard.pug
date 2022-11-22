@@ -16,6 +16,7 @@ block content
                             .col-md-10.mx-4
                                 h5.card-title= user.username
                                 p.card-text(style="font-size: 15px")= user.email
+                                p.card-text(style="font-size: 15px")= user.phone
                                 p.card-text(style="font-size: 15px; font-weight: 700") Date of Birth :
                                 p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
                                 a.btn.btn-danger(href='/api/v1/users/signout' style="text-decoration: none;") Logout
@@ -28,12 +29,12 @@ block content
                                 th(colspan="8").text-center.bg-secondary.p-2 Bookings
                             tr(style="border-bottom: 3px solid grey;")
                                 th User
-                                th Booked At
+                                th Booked On
                         
                                 th Service
-                        
+                                th Mpesa Receipt No.
                                 th Price(Ksh)
-                                th Date
+                                th Appointment Date
                                 th Time
                             each booking in userBookings
                                 tr
@@ -42,10 +43,10 @@ block content
                                     td= booking.createdAt.toLocaleDateString()
                                 
                                     td= booking.service.name
-                                
+                                    td= booking.MpesaReceiptNumber
                                     td= booking.price
                                     td= booking.appointment.toLocaleDateString('tr-Tr', {year: 'numeric',month: '2-digit',day: '2-digit'})
                                     td= booking.appointment.toLocaleTimeString()
                                     
-                    .btn.btn-outline-success.m-2 Full statement
-                    a(href="/api/v1/bookings").btn.btn-outline-primary.m-2 New Booking
+                    a(href="/api/v1/bookings").btn.btn-outline-primary.my-2.mx-5 New Booking
+                    a(href="#").btn.btn-outline-primary.my-2.mx-5 Download Receipt

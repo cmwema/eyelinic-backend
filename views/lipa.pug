@@ -4,12 +4,13 @@ block content
     .container
         .row 
             .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
-                .card-header.bg-secondary.text-white.text-center
-                    h4 Confirm Booking
+                .card-header.text-success.text-center
+                    h4 Lipa na Mpesa
                 .card-body.p-md-5
                     form(action=`/api/v1/bookings/${service._id}` method='POST')
+                        p Enter your Mpesa when prompted.
                         .form-group
-                            input.form-control(type='text' name='phone' value="0790028824" hidden)
+                            input.form-control(type='text' name='phone' value=`${user.phone}` hidden)
                         .form-group
                             .px-md-5 
                                 input#InputName.form-control(required type='text' name="service" aria-describedby='nameHelp' value=`${service._id}` hidden)
@@ -19,10 +20,7 @@ block content
                         .form-group 
                             .px-md-5
                                 input#price(required type="text" name="user" min="0" max="100000" value=`${user._id}` hidden)
-                        .form-group
-                            label.my-2(for='date') Appointment Date:
-                            .px-md-5 
-                                input#date(type="datetime-local", name="appointment" min=`${new Date().toLocaleDateString('es-US', {year: 'numeric', month: '2-digit',day: '2-digit',hour: '2-digit',minute: '2-digit'})}`)
-                        input.btn.btn-primary.btn-block.mt-3(type="submit" value="Confirm")
+                        
+                        input.btn.btn-success.btn-block.mt-3.p-2(type="submit" value="Proceed")
 
                 

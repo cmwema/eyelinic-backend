@@ -16,7 +16,7 @@ const tokenMiddleware = async (req, res, next) => {
       }
     )
     .then((response) => {
-      console.log(response.data.access_token);
+      // console.log(response.data.access_token);
       token = response.data.access_token;
       next();
     })
@@ -53,7 +53,7 @@ const postStkController = async (req, res) => {
     PartyA: `254${phone}`,
     PartyB: "174379",
     PhoneNumber: `254${phone}`,
-    CallBackURL: "https://9daf-41-89-160-17.in.ngrok.io/api/v1/pay/callback",
+    CallBackURL: "https://16e1-154-79-248-18.in.ngrok.io/api/v1/pay/callback",
     AccountReference: "Test",
     TransactionDesc: "Test",
   };
@@ -65,9 +65,10 @@ const postStkController = async (req, res) => {
       },
     })
     .then((response) => {
-      console.log(response.data);
-
-      res.status(200).json(response.data.ResponseDescription);
+      // console.log(response);
+      const data = response.data;
+      // console.log("success");
+      return res.redirect("/api/v1/bookings");
     })
     .catch((err) => {
       console.log(err);

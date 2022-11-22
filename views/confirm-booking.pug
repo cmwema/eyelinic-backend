@@ -1,0 +1,23 @@
+extends base
+
+block content 
+    .container
+        .row 
+            .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
+                .card-header.bg-secondary.text-white.text-center
+                    h4 Confirm Booking
+                .card-body.p-md-5
+                    form(action=`/api/v1/bookings/${service._id}/book` method='POST')
+                        .form-group
+                            input.form-control(type='text' name='phone' value=`${user.phone}` hidden)
+
+
+                        .form-group
+                            .px-md-5 Select Appointment Time and Day(working hours are 0800hrs-2000hrs)
+                                input#appointment(type="datetime-local", name="appointment" step=`${1 * 60 * 60}` min=`${new Date().toISOString()}` )
+                        .form-group
+                            .px-md-5 
+                                input.form-control(required type='text' name="MpesaReceiptNumber" aria-describedby='nameHelp' placeholder="Enter mpesa receipt Number")
+                        input.btn.btn-success.btn-block.mt-3(type="submit" value="confirm")
+
+                

@@ -19,14 +19,20 @@ const bookingSchema = new mongoose.Schema({
     type: Date,
     require: [true, "Booking must have an apointment."],
     min: `${new Date()}`,
+    unique: true,
+  },
+  MpesaReceiptNumber: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  PhoneNumber: {
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now(),
-  },
-  paid: {
-    type: Boolean,
-    default: true,
   },
 });
 
