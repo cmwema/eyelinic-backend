@@ -2,39 +2,29 @@ extends base
 
 block content
   .container-fluid 
-    .row 
-      .col-md-4
-        .card 
-          .card-header.bg-secondary.text-white
-            | User profile 
-          .card-body.container-fluid
-            .row.mb-3.d-flex.justify-content-center
-              .col-md-6.mx-5.p-3
-                img.img-fluid(src=`/img/users/${user.photo}` alt='user photo' style='width:100px; height:100px; border-radius:50%')
-            .row.d-flex.justify-content-center
-              .col-md-10.mx-4
-                h5.card-title= user.username
-                p.card-text(style="font-size: 15px")= user.email
-                p.card-text(style="font-size: 15px; font-weight: 700") Date of Birth :
-                p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
-                a.btn.btn-danger(href='/api/v1/users/signout' style="text-decoration:none") Logout
-      .col-md-8.my-4
-        form(action="/api/v1/users/update-profile" method="POST" enctype="multipart/form-data")
-          legend.text-primary.text-center(style="font-weight: 900") Update Profile
-          .form-group 
-            label.my-2(for='photo') profile pic
-            .px-md-5
-              input(type='file', name="photo", id="photo")
-          .form-group
-            label.my-2(for='InputName') Full Name
-            .px-md-5 
-              input#InputName.form-control(type='text', name="username" aria-describedby='nameHelp', placeholder='Enter full name', value=`${user.username}`)
-          .form-group
-            label.my-2(for='InputEmail1') Email address
-            .px-md-5
-              input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email', value=`${user.email}`)
-          .form-group
-            label.my-2(for='date_of_birth') Date of Birth
-            .px-md-5
-              input#date_of_birth.form-control(type='date', name="dateOfBirth" aria-describedby='emailHelp', min='1900-01-01', max=`${new Date().getFullYear() - 18}-${new Date().getMonth()}-${new Date().getDate() - 1}`, placeholder='Enter date of birth', value=`${user.dateOfBirth.toISOString().split('T')[0]}`)
-          input.btn.btn-primary.btn-block.mt-3(type="submit", value="Update Profile")
+    .row.profile-settings.pb-5
+      .col-md-12.m-4.bg-light.text-black
+        form.p-5(action="/api/v1/users/update-profile" method="POST" enctype="multipart/form-data")
+          legend.text-primary.text-center.m-3(style="font-weight: 900") Update Profile
+          .row
+            .form-group.col-md-6
+              label.my-2(for='photo') profile pic
+              .px-md-3
+                input(type='file', name="photo", id="photo")
+          
+            .form-group.col-md-6
+              label.my-2(for='InputName') Full Name
+              .px-md-5 
+                input#InputName.form-control(type='text', name="username" aria-describedby='nameHelp', placeholder='Enter full name', value=`${user.username}`)
+          .row
+            .form-group.col-md-6
+              label.my-2(for='InputEmail1') Email address
+              .px-md-5
+                input#InputEmail1.form-control(type='email', name="email" aria-describedby='emailHelp', placeholder='Enter email', value=`${user.email}`)
+            .form-group.col-md-6
+              label.my-2(for='date_of_birth') Date of Birth
+              .px-md-5
+                input#date_of_birth.form-control(type='date', name="dateOfBirth" aria-describedby='emailHelp', min='1900-01-01', max=`${new Date().getFullYear() - 18}-${new Date().getMonth()}-${new Date().getDate() - 1}`, placeholder='Enter date of birth', value=`${user.dateOfBirth.toISOString().split('T')[0]}`)
+          .row
+            .form-group.col-md-6
+              input.btn.btn-primary.btn-block.my-5(type="submit", value="Update Profile")

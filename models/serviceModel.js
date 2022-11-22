@@ -13,18 +13,6 @@ const serviceSchema = new mongoose.Schema(
     slug: {
       type: String,
     },
-    ratingAverage: {
-      type: Number,
-      default: 4.5,
-      min: 1,
-      max: 5,
-      set: (val) => Math.round(val * 10) / 10,
-    },
-    ratingQuantity: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     price: {
       type: Number,
       required: [true, "service must have a price"],
@@ -50,7 +38,7 @@ const serviceSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-serviceSchema.index({ price: 1, ratingAverage: -1 }); //price search ordered in ascending  and ratingAverage in descending
+serviceSchema.index({ price: 1 }); //price search ordered in ascending   in descending
 serviceSchema.index({ slug: 1 });
 // MIDDLEWARES
 serviceSchema.pre("save", function (next) {
@@ -63,16 +51,9 @@ serviceSchema.pre("save", function (next) {
 serviceSchema.pre(/^find/, function (next) {
   this.populate({
     path: "opticians",
-    select:
-      "-createdAt -payments -consultations -dateOfBirth -phoneNumber -bookings",
+    select: "-createdAt -payments  -dateOfBirth -phoneNumber",
   });
   next();
-});
-
-serviceSchema.virtual("reviews", {
-  ref: "Review",
-  foreignField: "service",
-  localField: "_id",
 });
 
 serviceSchema.set("toObject", { virtuals: true });

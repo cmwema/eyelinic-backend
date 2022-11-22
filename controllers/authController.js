@@ -11,6 +11,7 @@ exports.getSignUp = (req, res) => {
 };
 exports.postSignUp = catchAsync(async (req, res, next) => {
   const username = req.body.username;
+  const phone = req.body.phone;
   const email = req.body.email;
   const dateOfBirth = req.body.dateOfBirth;
   const password = req.body.password;
@@ -19,33 +20,34 @@ exports.postSignUp = catchAsync(async (req, res, next) => {
     throw new AppError("Passwords do not match");
   }
 
-  const newUser = await User.register(
-    new User({
-      username: req.body.username,
-      email: req.body.email,
-      dateOfBirth: req.body.dateOfBirth,
-    }),
-    password
-  );
+  try {
+    const newUser = await User.register(
+      new User({
+        username,
+        email,
+        dateOfBirth,
+        phone,
+      }),
+      password
+    );
+    console.log("User sign up successfull");
 
-  console.log(newUser);
-
-  const url = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/users/profile-settings`;
-
-  // new Email(newUser, url).sendWelcome();
-
-  passport.authenticate("local", {
-    failureRedirect: "/api/v1/users/login",
-    successRedirect: "/api/v1/users/dashboard",
-  });
+    const url = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/profile-settings`;
+    // new Email(newUser, url).sendWelcome();
+    res.redirect("/api/v1/users/login");
+  } catch (err) {
+    console.log(err.message);
+    res.send(err.message);
+  }
 });
 // log user
 exports.getLogIn = (req, res, next) => {
   res.render("login");
 };
 exports.postLogIn = async (req, res) => {
+  console.log(req.body);
   passport.authenticate("local", {
     failureRedirect: "/api/v1/users/login",
     successRedirect: "/api/v1/users/dashboard",
@@ -60,18 +62,18 @@ exports.getLogout = (req, res) => {
     res.redirect("/");
   });
 };
-// exports.restrictTo = (...roles) => {
-//   return (req, res, next) => {
-//     // console.log(req.user);
-//     if (!roles.includes(req.user.role)) {
-//       return next(
-//         new AppError("You do not have permission to perform this action", 403)
-//       );
-//     }
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // console.log(req.user);
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
 
-//     next();
-//   };
-// };
+    next();
+  };
+};
 exports.isLoggedIn = async (req, res, next) => {
   if (req.isAuthenticated) {
     return next();

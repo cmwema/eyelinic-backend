@@ -1,7 +1,0 @@
-extends base
-
-block content
-
-   h3 Welcome to Payment Gateway
-    form(action='payment' method='POST')
-      script.stripe-button(src='https://checkout.stripe.com/v2/checkout.js' data-key=`${key}` data-amount=`${amount}` data-currency='Ksh' data-name=`${productName}` data-description=`${description}` data-locale='auto')

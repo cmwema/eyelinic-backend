@@ -14,7 +14,7 @@ block content
           .form-group
             label.my-2(for='password') Password
             .px-md-5
-              input#password.form-control.input-group-sm(type='password'  name="password", placeholder='Password')
+              input#password.form-control.input-group-sm(type='password' pattern=".{8,}" name="password", placeholder='Password')
           input.btn.btn-primary.btn-block.mt-3(type="submit", value="Login") 
         .text-center
           a.d-block.small.mt-3.link-primary(href='/api/v1/users/signup' style="text-decoration:none") Register an Account

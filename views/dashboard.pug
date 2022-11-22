@@ -4,8 +4,8 @@ extends base
 block content 
     .container-fluid 
         .row 
-            .col-md-4
-                .card 
+            .col-md-4.profile-card
+                .card
                     .card-header.text-primary
                         h3 Dashboard 
                     .card-body.container-fluid
@@ -20,7 +20,7 @@ block content
                                 p.card-text(style="font-size: 13px")= user.dateOfBirth.toDateString()
                                 a.btn.btn-danger(href='/api/v1/users/signout' style="text-decoration: none;") Logout
                     
-            .col-md-7.border.border-black
+            .col-md-7.border.border-black.bg-light
                 .container-fluid(style="width=100%")                
                     .row.mb-5#bookings
                         table(style="width=100%")

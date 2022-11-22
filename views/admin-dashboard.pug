@@ -2,9 +2,9 @@ extends base
 
 block content 
     .container-fluid.mb-5
-        h3.text-center.text-primary.m-2 Admin Dashboard
+        h3.text-center.text-primary.m-2.bg-light Admin Dashboard
         hr.text-secondary(style="font-weight: 900")
-        .row.m-4
+        .row.m-4.bg-light.p-3
             table(style="width:100%; padding: 10px")
                 tr 
                     th.text-center Users
@@ -19,7 +19,7 @@ block content
                     td.text-center.text-primary(style="font-weight: 700")= sales
 
         hr.text-dark
-        .row 
+        .row.bg-light.p-3
             .col-md-12.border.border-black 
                 .container-fluid(style="width=100%")
                     .row.mb-5#users
@@ -50,38 +50,10 @@ block content
                                         a(href=`/api/v1/users/${user._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del
 
         hr
-        //- services
-        .row 
-            .col-md-5.border.border-black 
-                .container-fluid(style="width=100%")                
-                    .row.mb-5#services
-                        table(style="width=100%")
-                            tr
-                                th(colspan="8").text-center.bg-secondary.p-2 Services
-                            tr(style="border-bottom: 3px solid grey;")
-                                th Name
-                                th Price(Ksh)
-                        
-                                th Reviews
-                        
-                                th Rating
-                                th edit 
-                                th delete   
-                            each service in services
-                                tr
-                                    td= service.name
-                                        
-                                    td= service.price
-                                
-                                    td= service.ratingQuantity
-                                
-                                    td= service.ratingAverage
-                                    td
-                                        a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
-                                    td 
-                                        a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
-                    a(href="/api/v1/services" ).btn.btn-outline-success.mb-2 new service
-            .col-md-7.border.border-black
+
+        .row
+            
+            .col-md-12.border.border-black.bg-light.p-3
                 .container-fluid(style="width=100%")                
                     .row.mb-5#bookings
                         table(style="width=100%")
@@ -109,3 +81,50 @@ block content
 
                                     td= booking.appointment.toLocaleDateString('tr-Tr', {year: 'numeric',month: '2-digit',day: '2-digit'})
                                     td= booking.appointment.toLocaleTimeString()
+
+        hr
+        .row 
+            .col-md-6.border.border-black.bg-light.p-3
+                .container-fluid(style="width=100%")                
+                    .row.mb-5#services
+                        table(style="width=100%")
+                            tr
+                                th(colspan="8").text-center.bg-secondary.p-2 Services
+                            tr(style="border-bottom: 3px solid grey;")
+                                th Name
+                                th Price(Ksh)
+                                th edit 
+                                th delete   
+                            each service in services
+                                tr
+                                    td= service.name
+                                        
+                                    td= service.price
+                                
+                                    td
+                                        a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                    td 
+                                        a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
+                    a(href="/api/v1/services" ).btn.btn-outline-success.mb-2 new service
+            .col-md-6.border.border-black.bg-light.p-3
+                .container-fluid(style="width=100%")                
+                    .row.mb-5#services
+                        table(style="width=100%")
+                            tr
+                                th(colspan="8").text-center.bg-secondary.p-2 Payments
+                            tr(style="border-bottom: 3px solid grey;")
+                                th Name
+                                th Price(Ksh)
+                                th edit 
+                                th delete   
+                            each service in services
+                                tr
+                                    td= service.name
+                                        
+                                    td= service.price
+                                
+                                    td
+                                        a(href=`/api/v1/services/${service._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
+                                    td 
+                                        a(href=`/api/v1/services/${service._id}/del` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-danger.px-3 del            
+                    a(href="/api/v1/services" ).btn.btn-outline-success.mb-2 new service

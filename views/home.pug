@@ -1,16 +1,13 @@
 extends base
 
 block content 
-    .container-fluid.d-flex-row.justify-content-center.mx-md-5.my-5
-        .row.mx-md-5.mt-5
+    .container-fluid.d-flex-row.justify-content-center.my-5.intro-section
+        .row.mt-5
             .col-md-12
-                h1.text-center Welcome to Eyelinic 
-                p.text-center 
+                h1.text-center.intro-section--title Welcome to Eyelinic 
+                p.intro-section--description.mx-5
                 | You vision is taken care of by the best professional personels ever. 
                 | We offer you affordable optical services and you can book an appointment with one of our opticians with just a few steps
-                p.text-center 
-
-        .row.mx-md-5.my-3 
-            .col-md-12
-                a.btn.btn-outline-danger.mx-md-5.px-3(href="/api/v1/users/signup" style="text-decoration: none") Get started
-                a.btn.btn-primary.px-3(href='/api/v1/users/login' style="text-decoration: none;") Log in
+            .col-md-12.my-5
+                a.btn.btn-outline-danger.px-3.m-3(href="/api/v1/users/signup" style="text-decoration: none") Get started
+                a.btn.btn-primary.px-3.m-3(href='/api/v1/users/login' style="text-decoration: none;") Log in

@@ -1,4 +1,3 @@
-//importing axios
 const axios = require("axios");
 
 const tokenMiddleware = async (req, res, next) => {
@@ -54,7 +53,7 @@ const postStkController = async (req, res) => {
     PartyA: `254${phone}`,
     PartyB: "174379",
     PhoneNumber: `254${phone}`,
-    CallBackURL: "https://mydomain.com/pat",
+    CallBackURL: "https://9daf-41-89-160-17.in.ngrok.io/api/v1/pay/callback",
     AccountReference: "Test",
     TransactionDesc: "Test",
   };
@@ -67,6 +66,7 @@ const postStkController = async (req, res) => {
     })
     .then((response) => {
       console.log(response.data);
+
       res.status(200).json(response.data.ResponseDescription);
     })
     .catch((err) => {

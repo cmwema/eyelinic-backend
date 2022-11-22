@@ -20,7 +20,6 @@ const cors = require("cors");
 
 const userRouter = require("./routes/userRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
-const reviewRouter = require("./routes/reviewRoutes");
 const viewRouter = require("./routes/viewRoutes");
 const bookingRouter = require("./routes/bookingRoutes");
 const payRouter = require("./routes/payRoutes");
@@ -78,7 +77,7 @@ app.use(xssClean());
 // preventing parameter pollution
 app.use(
   hpp({
-    whitelist: ["name", "ratingAverage", "price", "ratingQuantity"],
+    whitelist: ["name", "price"],
   })
 );
 // compress responses(html/ json)
@@ -88,7 +87,7 @@ app.use(compression());
 app.use("/", viewRouter);
 app.use("/api/v1/services", serviceRouter);
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/reviews", reviewRouter);
+
 app.use("/api/v1/bookings", bookingRouter);
 app.use("/api/v1/pay", payRouter);
 app.all("*", (req, res, next) => {
