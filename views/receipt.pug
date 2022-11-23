@@ -1,0 +1,59 @@
+extends base
+
+block content 
+    .container 
+        .row 
+            .col-md-12
+                .card
+                    .card-header.text-primary.text-center
+                        h3 Receipt
+                    .card-body.container-fluid
+                        .row.mb-3.d-flex.justify-content-center
+                            .col-md-6
+                                table(style="width: 75%; margin: 10px")
+                                    tr 
+                                        td.card-text Timestamp :
+                                        td.card-text.text-success= booking.createdAt.toDateString()
+                                
+                                    tr
+                                        td.card-text Booking Id :
+                                        td.card-text.text-sucess= booking._id
+                                    tr 
+                                        - const receiptNo = `${new String(booking._id).slice(0, 5)}${new String(booking.MpesaReceiptNumber).slice(0, 5)}`
+                                        td.card-text ReceiptNo :
+                                        td.card-text.text-success= receiptNo
+
+                            .col-md-4.mx-4
+                                table 
+                                    tr 
+                                        td(colspan="2").card-text= user.username
+                                    tr
+                                        td.card-text= booking.user.email
+                                    tr
+                                        td.card-text= booking.user.phone
+                        .row.d-flex.justify-content-center
+                            .col-md-12.px-5.mx-5
+                                table(style="width: 75%; margin: 10px")
+                                    tr 
+                                        td.card-text Mpesa Receipt Number :
+                                        td.card-text.text-success= booking.MpesaReceiptNumber
+                                    tr 
+                                        td.card-text Phone Number :
+                                        td.card-text.text-success= booking.PhoneNumber
+                                    tr 
+                                        td.card-text Appointment Date :
+                                        td.card-text.text-success= booking.appointment.toDateString()
+                                    tr 
+                                        td.card-text Appointment Time : 
+                                        td.card-text.text-success= booking.appointment.toTimeString()
+                                    tr 
+                                        td.card-text Service Booked :
+                                        td.card-text.text-success= booking.service.name
+                                    tr
+                                        td.card-text Amount(price) : 
+                                        td.card-text.text-success= booking.price
+                                
+                                
+
+                            .col-md-6.m-5
+                                a.btn.btn-danger.m-3(href='/api/v1/users/signout' style="text-decoration: none;") Download 

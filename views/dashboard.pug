@@ -29,24 +29,21 @@ block content
                                 th(colspan="8").text-center.bg-secondary.p-2 Bookings
                             tr(style="border-bottom: 3px solid grey;")
                                 th User
-                                th Booked On
-                        
                                 th Service
                                 th Mpesa Receipt No.
                                 th Price(Ksh)
-                                th Appointment Date
+                                th Date
                                 th Time
+                                th Booking Receipt
                             each booking in userBookings
                                 tr
                                     td= booking.user.username
-                                        
-                                    td= booking.createdAt.toLocaleDateString()
-                                
                                     td= booking.service.name
                                     td= booking.MpesaReceiptNumber
                                     td= booking.price
                                     td= booking.appointment.toLocaleDateString('tr-Tr', {year: 'numeric',month: '2-digit',day: '2-digit'})
                                     td= booking.appointment.toLocaleTimeString()
+                                    td 
+                                        a(href=`/api/v1/bookings/${booking._id}/receipt` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 view
                                     
                     a(href="/api/v1/bookings").btn.btn-outline-primary.my-2.mx-5 New Booking
-                    a(href="#").btn.btn-outline-primary.my-2.mx-5 Download Receipt
