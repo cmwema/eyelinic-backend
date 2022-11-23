@@ -62,7 +62,7 @@ router
           throw new Error("Amount not of this service");
         }
 
-        const booking = await Booking.create({
+        await Booking.create({
           service: req.params.id,
           user,
           appointment,
@@ -80,4 +80,16 @@ router
     bookingController.createBooking
   );
 
+router.route("/:id/receipt").get(async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+    res.render("receipt", { user: req.user, booking });
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+});
 module.exports = router;
