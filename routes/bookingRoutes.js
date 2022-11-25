@@ -4,6 +4,8 @@ const Booking = require("./../models/bookingModel");
 const bookingController = require("./../controllers/bookingController");
 const authController = require("./../controllers/authController");
 const Pay = require("./../models/payModel");
+const PDFService = require("../utils/receipt");
+
 const {
   postStkController,
   tokenMiddleware,
@@ -26,6 +28,7 @@ router
     try {
       const service = await Service.find({ _id: req.params.id });
       res.render("lipa", { user: req.user, service: service[0] });
+      console.log(req.user);
     } catch (error) {
       console.log(error.message);
       res.send(error.message);
@@ -54,11 +57,12 @@ router
         const service = await Service.findById(req.params.id);
         const appointment = req.body.appointment;
         const user = req.user.id;
+        console.log(user);
 
         if (!payment || !service || !appointment || !user) {
           throw new Error("Could not retrieve details");
         }
-        if (service[0].price !== payment[0].Amount) {
+        if (service.price !== payment[0].Amount) {
           throw new Error("Amount not of this service");
         }
 
@@ -86,10 +90,12 @@ router.route("/:id/receipt").get(async (req, res) => {
     if (!booking) {
       throw new Error("Booking not found");
     }
+    req.booking = booking;
     res.render("receipt", { user: req.user, booking });
   } catch (error) {
     console.log(error.message);
     res.send(error.message);
   }
 });
+
 module.exports = router;

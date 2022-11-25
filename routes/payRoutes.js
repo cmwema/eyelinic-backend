@@ -17,7 +17,7 @@ router.post("/callback", async (req, res) => {
 
     if (!CallBackData.Body.stkCallback.CallbackMetadata) {
       console.log("No metadata");
-      // return res.redirect("/api/v1/users/dashboard");
+      throw new Error("Payments not processed");
     } else {
       console.log(CallBackData.Body.stkCallback.CallbackMetadata);
       const Amount =
@@ -25,9 +25,9 @@ router.post("/callback", async (req, res) => {
       const MpesaReceiptNumber =
         CallBackData.Body.stkCallback.CallbackMetadata.Item[1].Value;
       const TransactionDate =
-        CallBackData.Body.stkCallback.CallbackMetadata.Item[2].Value;
-      const PhoneNumber =
         CallBackData.Body.stkCallback.CallbackMetadata.Item[3].Value;
+      const PhoneNumber =
+        CallBackData.Body.stkCallback.CallbackMetadata.Item[4].Value;
 
       await Pay.create({
         Amount,
@@ -39,6 +39,7 @@ router.post("/callback", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+    res.send(err.message);
   }
 });
 

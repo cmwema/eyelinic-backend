@@ -29,6 +29,7 @@ const tokenMiddleware = async (req, res, next) => {
 const postStkController = async (req, res) => {
   const shortCode = 174379;
   const phone = req.body.phone.substring(1);
+  // console.log(phone);
   const amount = req.body.amount;
   const passkey = process.env.MPESA_PASSKEY;
   const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
@@ -41,6 +42,7 @@ const postStkController = async (req, res) => {
     ("0" + date.getHours()).slice(-2) +
     ("0" + date.getMinutes()).slice(-2) +
     ("0" + date.getSeconds()).slice(-2);
+
   const password = new Buffer.from(shortCode + passkey + timestamp).toString(
     "base64"
   );
@@ -51,9 +53,9 @@ const postStkController = async (req, res) => {
     TransactionType: "CustomerPayBillOnline",
     Amount: amount,
     PartyA: `254${phone}`,
-    PartyB: "174379",
+    PartyB: shortCode,
     PhoneNumber: `254${phone}`,
-    CallBackURL: "https://16e1-154-79-248-18.in.ngrok.io/api/v1/pay/callback",
+    CallBackURL: "https://8e95-105-161-30-43.in.ngrok.io/api/v1/pay/callback",
     AccountReference: "Test",
     TransactionDesc: "Test",
   };
