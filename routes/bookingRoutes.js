@@ -4,7 +4,9 @@ const Booking = require("./../models/bookingModel");
 const bookingController = require("./../controllers/bookingController");
 const authController = require("./../controllers/authController");
 const Pay = require("./../models/payModel");
-const PDFService = require("../utils/receipt");
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const path = require("path");
 
 const {
   postStkController,
@@ -84,14 +86,65 @@ router
     bookingController.createBooking
   );
 
-router.route("/:id/receipt").get(async (req, res) => {
+router.route("/:id/receipt").get(async (req, res, next) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking) {
-      throw new Error("Booking not found");
+      throw new Error("No booking found");
     }
-    req.booking = booking;
-    res.render("receipt", { user: req.user, booking });
+    // console.log(booking);
+    const service = await Service.findById(booking.service);
+    if (!service) {
+      throw new Error("No service found");
+    }
+    const user = req.user;
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const pdfDoc = new PDFDocument({ size: "A6" });
+    const fileName = `receipt-${booking._id}.pdf`;
+    const filePath = path.join(__dirname, `../public/pdfs/${fileName}`);
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="' + fileName + '"'
+    );
+    pdfDoc.pipe(fs.createWriteStream(filePath));
+    pdfDoc.pipe(res);
+
+    pdfDoc
+      .fontSize(10)
+      .text(`Receipt No: ${booking.MpesaReceiptNumber}`, {
+        align: "right",
+      })
+      .text(`Date : ${new Date().toLocaleDateString()}`, {
+        align: "right",
+      })
+      .font("Times-Roman");
+    pdfDoc.dash(5, { space: 5 });
+
+    pdfDoc.moveDown();
+
+    pdfDoc
+      .text(`Name: ${booking.user.username}`)
+      .text(`Email : ${booking.user.email}`)
+      .text(`Phone Number : ${booking.PhoneNumber}`)
+      .text(`Service Booked : ${booking.service.name}`)
+      .text(`Amount : ${booking.price}`)
+      .text(
+        `Appointment Date : ${booking.appointment.toLocaleDateString("tr-Tr", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })}`
+      )
+      .text(`Appointment Time : ${booking.appointment.toLocaleTimeString()}`)
+      .font("Times-Roman")
+      .fontSize(14);
+
+    pdfDoc.dash(5, { space: 5 });
+
+    pdfDoc.end();
   } catch (error) {
     console.log(error.message);
     res.send(error.message);
