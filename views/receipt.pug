@@ -56,4 +56,5 @@ block content
                                 
 
                             .col-md-6.m-5
-                                a.btn.btn-danger.m-3(href='/api/v1/users/signout' style="text-decoration: none;") Download 
+                                form(method="POST"  action=`/api/v1/bookings/${booking._id}/receipt`)
+                                    input.btn.btn-danger.m-3(type="submit" value="Download" style="text-decoration: none;") 
