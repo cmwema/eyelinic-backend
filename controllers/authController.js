@@ -43,8 +43,9 @@ exports.postSignUp = catchAsync(async (req, res, next) => {
   }
 });
 // log user
-exports.getLogIn = (req, res, next) => {
+exports.getLogIn = async (req, res, next) => {
   res.render("login");
+  console.log(User.schema.methods.setPassword);
 };
 exports.postLogIn = async (req, res) => {
   console.log(req.body);
@@ -141,10 +142,9 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("Token is invalid or has expired", 400));
   }
-  user.password = password;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  await user.save();
+  await user.setPassword(password);
 
   res.redirect("/api/v1/users/login");
 });
