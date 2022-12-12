@@ -1,24 +1,24 @@
-.container-fluid.bg-dark.px-3
+.container-fluid.bg-light.px-3(style="position: sticky; top: 0; z-index: 1000; ")
   header(class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3  border-bottom")
     if user
       ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
         li
-          a(href="/api/v1/users/dashboard" class="nav-link px-2 link-link link-light  " style="text-decoration: none;") Dashboard
+          a(href="/api/v1/users/dashboard" class="nav-link px-2 link-link link-dark  " style="text-decoration: none;") Dashboard
         li
-          a(href="/api/v1/users/profile-settings" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Profile-settings
+          a(href="/api/v1/users/profile-settings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Profile-settings
         if (user.role === 'admin' )
           li 
-            a(href="/api/v1/users/dashboard#users" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Users
+            a(href="/api/v1/users/dashboard#users" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Users
           li 
-            a(href="/api/v1/users/dashboard#services" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Services
+            a(href="/api/v1/users/dashboard#services" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Services
 
           li
-            a(href="/api/v1/users/dashboard#bookings" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Bookings
+            a(href="/api/v1/users/dashboard#bookings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Bookings
         else
           li 
-            a(href="/api/v1/bookings" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Bookings
+            a(href="/api/v1/bookings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Bookings
           li
-            a(href="#" class="nav-link px-2 link-link link-light " style="text-decoration: none;") help
+            a(href="#" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") help
 
       div(class="col-md-3 text-end")
         a(href="/api/v1/users/signout" class="btn btn-light text-black me-2 btn--custom" style="text-decoration: none;") Log out
@@ -28,11 +28,11 @@
     else
       ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
         li
-          a(href="/" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Home
+          a(href="/" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Home
         li
-          a(href="/about" class="nav-link px-2 link-link link-light " style="text-decoration: none;") About
+          a(href="/about" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") About
         li
-          a(href="/contact" class="nav-link px-2 link-link link-light " style="text-decoration: none;") Contact
+          a(href="/contact" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Contact
       div(class="col-md-3 text-end")    
         
         a.btn--custom(href="/api/v1/users/login" class="btn btn-light text-black me-2 btn--custom" style="text-decoration: none;")  Login
