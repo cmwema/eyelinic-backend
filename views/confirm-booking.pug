@@ -4,8 +4,8 @@ block content
     .container
         .row 
             .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
-                .card-header.bg-dark.text-white.text-center
-                    h4 Confirm Booking
+                .card-header.text-primary.text-center
+                    h2 Confirm Booking
                 .card-body.p-md-5
                     form(action=`/api/v1/bookings/${service._id}/book` method='POST')
                         .form-group
