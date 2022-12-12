@@ -1,41 +1,49 @@
-.container-fluid.bg-light.px-3(style="position: sticky; top: 0; z-index: 1000; ")
-  header(class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3  border-bottom")
-    if user
-      ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
-        li
-          a(href="/api/v1/users/dashboard" class="nav-link px-2 link-link link-dark  " style="text-decoration: none;") Dashboard
-        li
-          a(href="/api/v1/users/profile-settings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Profile-settings
-        if (user.role === 'admin' )
-          li 
-            a(href="/api/v1/users/dashboard#users" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Users
-          li 
-            a(href="/api/v1/users/dashboard#services" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Services
+if user
+  ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
+    li
+      a(href="/api/v1/users/dashboard" class="nav-link px-2 link-link link-dark  " style="text-decoration: none;") Dashboard
+    li
+      a(href="/api/v1/users/profile-settings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Profile-settings
+    if (user.role === 'admin' )
+      li 
+        a(href="/api/v1/users/dashboard#users" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Users
+      li 
+        a(href="/api/v1/users/dashboard#services" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Services
 
-          li
-            a(href="/api/v1/users/dashboard#bookings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Bookings
-        else
-          li 
-            a(href="/api/v1/bookings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Bookings
-          li
-            a(href="#" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") help
-
-      div(class="col-md-3 text-end")
-        a(href="/api/v1/users/signout" class="btn btn-light text-black me-2 btn--custom" style="text-decoration: none;") Log out
-        
-        img(src=`/img/users/${user.photo}` alt=`Photo of user` style='width: 40px; height: 40px; border-radius: 50%;')
-
+      li
+        a(href="/api/v1/users/dashboard#bookings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Bookings
     else
-      ul(class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0")
-        li
-          a(href="/" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Home
-        li
-          a(href="/about" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") About
-        li
-          a(href="/contact" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Contact
-      div(class="col-md-3 text-end")    
-        
-        a.btn--custom(href="/api/v1/users/login" class="btn btn-light text-black me-2 btn--custom" style="text-decoration: none;")  Login
-        
-        a.btn--custom(href="/api/v1/users/signup" class="btn btn-light text-black me-2 btn--custom" style="text-decoration: none;") Sign up
+      li 
+        a(href="/api/v1/bookings" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") Bookings
+      li
+        a(href="#" class="nav-link px-2 link-link link-dark " style="text-decoration: none;") help
 
+  div(class="col-md-3 text-end")
+    a(href="/api/v1/users/signout" class="btn btn-light text-black me-2 btn--custom" style="text-decoration: none;") Log out
+    
+    img(src=`/img/users/${user.photo}` alt=`Photo of user` style='width: 40px; height: 40px; border-radius: 50%;')
+
+else
+    nav.navbar.navbar-light.navbar-expand-md.py-3(style='margin-bottom: 45px')
+      .container
+        a.navbar-brand.d-flex.align-items-center(href='#')
+          span.bs-icon-sm.bs-icon-rounded.bs-icon-primary.d-flex.justify-content-center.align-items-center.me-2.bs-icon
+            svg.bi.bi-eye-fill(xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' fill='currentColor' viewBox='0 0 16 16')
+              path(d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z')
+              path(d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z')
+          span Eyelinic
+        button.navbar-toggler(data-bs-toggle='collapse' data-bs-target='#navcol-1')
+          span.visually-hidden Toggle navigation
+          span.navbar-toggler-icon
+        #navcol-1.collapse.navbar-collapse
+          ul.navbar-nav.me-auto
+            li.nav-item
+              a.nav-link.active(href='#') Home
+            li.nav-item
+              a.nav-link(href='#') About
+            li.nav-item
+              a.nav-link(href='#') Contact
+          a(href='#' style='margin-right: 278px')
+          a.btn.btn-primary.me-2(href="/api/v1/users/login" style="text-decoration: none;") Log In
+          a.btn.btn-primary.me-2(href="/api/v1/users/signup" style="text-decoration: none;") Sign Up
+          
