@@ -55,7 +55,7 @@ const postStkController = async (req, res) => {
     PartyA: `254${phone}`,
     PartyB: shortCode,
     PhoneNumber: `254${phone}`,
-    CallBackURL: "https://8e95-105-161-30-43.in.ngrok.io/api/v1/pay/callback",
+    CallBackURL: "https://eyelinic.onrender.com/api/v1/pay/callback",
     AccountReference: "Test",
     TransactionDesc: "Test",
   };
