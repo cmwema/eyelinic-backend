@@ -80,6 +80,14 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   res.redirect("/api/v1/users/dashboard");
 });
 
+exports.getAllUsers = handlerFactory.getAll(User);
+
+exports.createUser = handlerFactory.createOne(User);
+
+exports.getUser = handlerFactory.getOne(User);
+
+exports.updateUser = handlerFactory.updateOne(User);
+
 exports.getUserStats = catchAsync(async (req, res) => {
   const stats = await User.aggregate([
     {
@@ -105,11 +113,3 @@ exports.getUserStats = catchAsync(async (req, res) => {
     },
   });
 });
-
-exports.getAllUsers = handlerFactory.getAll(User);
-
-exports.createUser = handlerFactory.createOne(User);
-
-exports.getUser = handlerFactory.getOne(User);
-
-exports.updateUser = handlerFactory.updateOne(User);
