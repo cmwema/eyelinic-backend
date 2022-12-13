@@ -1,12 +1,23 @@
 extends base
 
 block content 
-    .container-fluid
-        .row 
-            .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
-                .card-header.bg-dark.text-white.text-center
-                    h4 Confirm Deletion
-                .card-body.p-md-5
-                    form(action=`${url}` method='POST')
-                        a.btn.btn-outline-primary.btn-block.mt-3.mx-2(href="/api/v1/users/dashboard") Cancel
-                        input.btn.btn-danger.btn-block.mt-3.mx-2(type="submit", value="Delete")
+    .container
+      .row
+        .col
+          .card
+            section.position-relative.py-4.py-xl-5(style='margin-bottom: 76px;margin-top: 15px;')
+              .container
+                .row.mb-5
+                  .col-md-8.col-xl-6.text-center.mx-auto
+                    h2 Confirm Deletion
+                .row.d-flex.justify-content-center
+                  .col-md-6.col-xl-4
+                    .card.mb-5
+                      .card-body.d-flex.flex-column.align-items-center
+                        form.text-center(action=`${url}` method='POST')
+                          .row
+                            .col
+                              a.btn.btn-outline-primary.btn-block.mt-3.mx-2(href="/api/v1/users/dashboard") Cancel
+                            .col
+                              input.btn.btn-danger.btn-block.mt-3.mx-2(type="submit", value="Delete")
+    
