@@ -75,7 +75,7 @@ block content
                         td= user.email
                         td= user.age
                         td= user.createdAt.toLocaleDateString()
-                        t= user.role
+                        td= user.role
                         td(style='margin-right: -9px;margin-left: -11px;')
                             a(href=`/api/v1/users/${user._id}` style="height: 25px; font-size: 15px; padding:3px; text-decoration: none").btn.btn-success.px-3 edit
                         td(style='margin-right: -9px;margin-left: -11px;')
