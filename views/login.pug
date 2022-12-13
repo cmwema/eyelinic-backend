@@ -1,9 +1,5 @@
-doctype html
-html(lang='en')
-  head
-    include _head.pug
-  body
-    include _header.pug
+extends base
+block content
     .container-sm-fluid.mx-4.mb-5
       .card.card-login.mx-md-5.mt-5
         .card-header.text-primary.text-center
@@ -21,8 +17,3 @@ html(lang='en')
             input.btn.btn-primary.btn-block.mt-3(type="submit", value="Login") 
           .text-center
             a.d-block.small.mt-3.link-primary(href='/api/v1/users/signup' style="text-decoration:none") Register an Account
-
-
-
-    include _footer.pug
-    script(src='/bootstrap-5.1.3-dist/js/bootstrap.min.js')
