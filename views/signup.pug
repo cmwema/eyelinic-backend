@@ -1,10 +1,10 @@
 extends base
 
 block content
-  .container-sm-fluid.mx-4.mb-5
+  .container-sm-fluid
       .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
-        .card-header.bg-dark.text-white.text-center
-          | Register an Account
+        .card-header.text-primary.text-center
+          h2 Register an Account
         .card-body.p-md-5
           form(action='/api/v1/users/signup' method='POST').container
             .row
@@ -40,4 +40,3 @@ block content
             input.btn.btn-primary.btn-block.mt-3(type="submit", value="Sign Up")
           .text-center
             a.d-block.small.mt-3.link-primary(href='/api/v1/users/login' style="text-decoration:none") Login Page
-            a.d-block.small.link-primary(href='/api/v1/users/forgot-password' style="text-decoration:none") Forgot Password?

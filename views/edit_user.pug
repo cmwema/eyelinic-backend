@@ -3,9 +3,9 @@ extends base
 block content 
     .container-fluid
         .row 
-            .card.card-register.mx-md-5.mt-5.d-flex.justify-content-center
-                .card-header.bg-dark.text-white.text-center
-                    h4 Edit User Account
+            .card.card-register.mt-5.d-flex.justify-content-center
+                .card-header.text-primary.text-center
+                    h2 Edit User Account
                 .card-body.p-md-5
                     form(action=`/api/v1/users/${userToEdit[0]._id}/update` method='POST')
                         .form-group

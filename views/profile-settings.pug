@@ -3,7 +3,7 @@ extends base
 block content
   .container-fluid 
     .row.profile-settings.pb-5
-      .col-md-12.m-4.bg-light.text-black
+      .col-md-12.my-4.bg-light.text-black
         form.p-5(action="/api/v1/users/update-profile" method="POST" enctype="multipart/form-data")
           legend.text-primary.text-center.m-3(style="font-weight: 900") Update Profile
           .row
