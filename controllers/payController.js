@@ -60,7 +60,8 @@ exports.mpesaPayMent = async (req, res, next) => {
           PartyA: phone,
           PartyB: shortcode,
           PhoneNumber: phone,
-          CallBackURL: "https://mydomain.com/pat",
+          CallBackURL:
+            "https://b3e7-105-161-102-201.eu.ngrok.io/api/v1/pay/callback",
           AccountReference: phone,
           TransactionDesc: "Book service",
         },
@@ -72,7 +73,7 @@ exports.mpesaPayMent = async (req, res, next) => {
       )
       .then((response) => {
         console.log(response.data);
-        res.status(200).json(response.data);
+        return res.redirect("/api/v1/bookings");
       })
       .catch((err) => {
         console.log(err);
@@ -80,5 +81,14 @@ exports.mpesaPayMent = async (req, res, next) => {
       });
   } catch (err) {
     console.log(err);
+  }
+};
+
+exports.mpesaCallback = async (req, res, next) => {
+  try {
+    console.log("hello from call back");
+  } catch (err) {
+    console.log(err);
+    res.send(err.message);
   }
 };
