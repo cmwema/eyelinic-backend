@@ -152,4 +152,12 @@ router.route("/:id/receipt").get(async (req, res, next) => {
   }
 });
 
+router
+  .route("/:id/del")
+  .get(authController.isLoggedIn, async (req, res) => {
+    const bookingToDel = await Booking.find({ _id: req.params.id });
+    const url = `/api/v1/bookings/${bookingToDel[0]._id}/del`;
+    res.render("confirm-del", { user: req.user, bookingToDel, url });
+  })
+  .post(bookingController.deleteBooking);
 module.exports = router;
