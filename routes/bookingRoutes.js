@@ -8,10 +8,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
 
-const {
-  postStkController,
-  tokenMiddleware,
-} = require("./../controllers/payController");
+const payController = require("./../controllers/payController");
 
 const router = express.Router();
 
@@ -36,7 +33,11 @@ router
       res.send(error.message);
     }
   })
-  .post(authController.isLoggedIn, tokenMiddleware, postStkController);
+  .post(
+    authController.isLoggedIn,
+    payController.generateToken,
+    payController.mpesaPayMent
+  );
 
 router
   .route("/:id/book")
