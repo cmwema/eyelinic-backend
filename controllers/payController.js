@@ -60,8 +60,7 @@ exports.mpesaPayMent = async (req, res, next) => {
           PartyA: phone,
           PartyB: shortcode,
           PhoneNumber: phone,
-          CallBackURL:
-            "https://b3e7-105-161-102-201.eu.ngrok.io/api/v1/pay/callback",
+          CallBackURL: "https://eyelinic.onrender.com/api/v1/pay/callback",
           AccountReference: phone,
           TransactionDesc: "Book service",
         },
