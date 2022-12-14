@@ -10,7 +10,7 @@ block content
                     form(action=`/api/v1/bookings/${service._id}` method='POST')
                         p Enter your Mpesa when prompted.
                         .form-group
-                            input.form-control(type='text' name='phone' value=`${user.phone}` )
+                            input.form-control(type='text' name='phone' value='254' required)
                         .form-group
                             .px-md-5 
                                 input#InputName.form-control(required type='text' name="service" aria-describedby='nameHelp' value=`${service._id}` hidden)

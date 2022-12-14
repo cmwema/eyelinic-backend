@@ -1,11 +1,12 @@
 const axios = require("axios");
+const Pay = require("../models/payModel");
 
-const tokenMiddleware = async (req, res, next) => {
-  const secreteKey = process.env.MPESA_COSUMER_SECRET;
-  const consumerKey = process.env.MPESA_CONSUMER_KEY;
-  const auth = new Buffer.from(`${consumerKey}:${secreteKey}`).toString(
-    "base64"
-  );
+exports.generateToken = async (req, res, next) => {
+  const secret = process.env.consumer_secret;
+  const consumer = process.env.consumer_key;
+
+  const auth = new Buffer.from(`${consumer}:${secret}`).toString("base64");
+
   await axios
     .get(
       "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
@@ -16,61 +17,9 @@ const tokenMiddleware = async (req, res, next) => {
       }
     )
     .then((response) => {
-      // console.log(response.data.access_token);
+      console.log(response.data.access_token);
       token = response.data.access_token;
       next();
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(err.statusCode).json(err.message);
-    });
-};
-
-const postStkController = async (req, res) => {
-  const shortCode = 174379;
-  const phone = req.body.phone.substring(1);
-  // console.log(phone);
-  const amount = req.body.amount;
-  const passkey = process.env.MPESA_PASSKEY;
-  const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
-
-  const date = new Date();
-  const timestamp =
-    date.getFullYear() +
-    ("0" + (date.getMonth() + 1)).slice(-2) +
-    ("0" + date.getDate()).slice(-2) +
-    ("0" + date.getHours()).slice(-2) +
-    ("0" + date.getMinutes()).slice(-2) +
-    ("0" + date.getSeconds()).slice(-2);
-
-  const password = new Buffer.from(shortCode + passkey + timestamp).toString(
-    "base64"
-  );
-  const data = {
-    BusinessShortCode: shortCode,
-    Password: password,
-    Timestamp: timestamp,
-    TransactionType: "CustomerPayBillOnline",
-    Amount: amount,
-    PartyA: `254${phone}`,
-    PartyB: shortCode,
-    PhoneNumber: `254${phone}`,
-    CallBackURL: "https://eyelinic.onrender.com/api/v1/pay/callback",
-    AccountReference: "Test",
-    TransactionDesc: "Test",
-  };
-
-  await axios
-    .post(url, data, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      // console.log(response);
-      const data = response.data;
-      // console.log("success");
-      return res.redirect("/api/v1/bookings");
     })
     .catch((err) => {
       console.log(err);
@@ -78,8 +27,58 @@ const postStkController = async (req, res) => {
     });
 };
 
-//exporting post controllers;
-module.exports = {
-  postStkController,
-  tokenMiddleware,
+exports.mpesaPayMent = async (req, res, next) => {
+  try {
+    const phone = req.body.phone;
+    const amount = +req.body.amount;
+
+    const date = new Date();
+    const timestamp =
+      date.getFullYear() +
+      ("0" + date.getMonth() + 1).slice(-2) +
+      ("0" + date.getDate()).slice(-2) +
+      ("0" + date.getHours()).slice(-2) +
+      ("0" + date.getMinutes()).slice(-2) +
+      ("0" + date.getSeconds()).slice(-2);
+
+    const shortcode = process.env.mpesa_paybill;
+    const passkey = process.env.passkey;
+
+    const password = new Buffer.from(shortcode + passkey + timestamp).toString(
+      "base64"
+    );
+
+    await axios
+      .post(
+        "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+        {
+          BusinessShortCode: shortcode,
+          Password: password,
+          Timestamp: timestamp,
+          TransactionType: "CustomerPayBillOnline",
+          Amount: amount,
+          PartyA: phone,
+          PartyB: shortcode,
+          PhoneNumber: phone,
+          CallBackURL: "https://mydomain.com/pat",
+          AccountReference: phone,
+          TransactionDesc: "Book service",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        res.status(200).json(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err.message);
+      });
+  } catch (err) {
+    console.log(err);
+  }
 };
